@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>File Renamer</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 600px;
+        margin: 40px auto;
+        padding: 20px;
+        background: #f5f5f5;
+      }
+      .container {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      .file-list {
+        margin: 20px 0;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        max-height: 200px;
+        overflow-y: auto;
+      }
+      .file-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 5px;
+        border-bottom: 1px solid #eee;
+      }
+      button {
+        background: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      button:hover {
+        background: #0056b3;
+      }
+      .drag-area {
+        border: 2px dashed #ccc;
+        padding: 20px;
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      .drag-area.active {
+        border-color: #007bff;
+        background: #f0f8ff;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>File Renamer</h1>
+      <div class="drag-area" id="dropZone">
+        Drop JPG files here or click to select
+        <input
+          type="file"
+          id="fileInput"
+          multiple
+          accept=".jpg"
+          style="display: none"
+        />
+      </div>
+      <div class="file-list" id="fileList"></div>
+      <button onclick="downloadFiles()" id="downloadBtn" style="display: none">
+        Download Renamed Files
+      </button>
+    </div>
+
+    <script>
+      let files = [];
+      const dropZone = document.getElementById("dropZone");
+      const fileInput = document.getElementById("fileInput");
+      const fileList = document.getElementById("fileList");
+      const downloadBtn = document.getElementById("downloadBtn");
+
+      dropZone.addEventListener("click", () => fileInput.click());
+      dropZone.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        dropZone.classList.add("active");
+      });
+      dropZone.addEventListener("dragleave", () =>
+        dropZone.classList.remove("active")
+      );
+      dropZone.addEventListener("drop", handleFiles);
+      fileInput.addEventListener("change", (e) => handleFiles(e));
+
+      function handleFiles(e) {
+        e.preventDefault();
+        dropZone.classList.remove("active");
+
+        const fileList = e.target.files || e.dataTransfer.files;
+        files = Array.from(fileList).filter((file) =>
+          file.name.toLowerCase().endsWith(".jpg")
+        );
+
+        displayFiles();
+        downloadBtn.style.display = files.length ? "block" : "none";
+      }
+
+      function displayFiles() {
+        fileList.innerHTML = files
+          .map(
+            (file, index) => `
+                <div class="file-item">
+                    <span>${file.name}</span>
+                    <span>${String(index + 1).padStart(3, "0")}.jpg</span>
+                </div>
+            `
+          )
+          .join("");
+      }
+
+      async function downloadFiles() {
+        const zip = new JSZip();
+
+        for (let i = 0; i < files.length; i++) {
+          const newName = `${String(i + 1).padStart(3, "0")}.jpg`;
+          const blob = await files[i].arrayBuffer();
+          zip.file(newName, blob);
+        }
+
+        const content = await zip.generateAsync({ type: "blob" });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(content);
+        link.download = "renamed_files.zip";
+        link.click();
+      }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
+  </body>
+</html>
