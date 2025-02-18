@@ -32,17 +32,12 @@
         border-color: #28a745;
         background: #f0fff0;
       }
-      .conversion-controls,
-      .quality-controls {
+      .conversion-controls {
         margin: 20px 0;
         padding: 15px;
         border: 1px solid #eee;
         border-radius: 8px;
         background: #fafafa;
-      }
-      .quality-slider {
-        width: 100%;
-        margin: 10px 0;
       }
       .file-list {
         margin: 20px 0;
@@ -147,23 +142,6 @@
         />
       </div>
 
-      <!-- Quality Controls (only for PNG to JPG) -->
-      <div class="quality-controls" id="qualityControls">
-        <h3>Quality Settings</h3>
-        <label for="quality">Quality: <span id="qualityValue">80</span>%</label>
-        <input
-          type="range"
-          id="quality"
-          class="quality-slider"
-          min="10"
-          max="100"
-          value="80"
-        />
-        <p>
-          Adjust quality for JPG conversion (PNG output ignores this setting)
-        </p>
-      </div>
-
       <!-- File List -->
       <div class="file-list" id="fileList"></div>
 
@@ -182,26 +160,20 @@
       const fileInput = document.getElementById("fileInput");
       const fileListContainer = document.getElementById("fileList");
       const conversionTypeSelect = document.getElementById("conversionType");
-      const qualityControls = document.getElementById("qualityControls");
-      const qualitySlider = document.getElementById("quality");
-      const qualityValue = document.getElementById("qualityValue");
       const convertBtn = document.getElementById("convertBtn");
       const downloadBtn = document.getElementById("downloadBtn");
 
       // Variables
       let files = [];
       let convertedFiles = [];
-      let quality = 80;
 
-      // Update file input accept attribute and quality controls visibility based on conversion type
+      // Update file input accept attribute based on conversion type
       function updateConversionSettings() {
         const conversionType = conversionTypeSelect.value;
         if (conversionType === "png-to-jpg") {
           fileInput.accept = ".png";
-          qualityControls.style.display = "block";
         } else if (conversionType === "jpg-to-png") {
           fileInput.accept = ".jpg,.jpeg";
-          qualityControls.style.display = "none";
         }
         // Clear any previously selected files
         files = [];
@@ -226,11 +198,6 @@
       dropZone.addEventListener("drop", handleFiles);
       fileInput.addEventListener("change", (e) => handleFiles(e));
       conversionTypeSelect.addEventListener("change", updateConversionSettings);
-
-      qualitySlider.addEventListener("input", (e) => {
-        quality = e.target.value;
-        qualityValue.textContent = quality;
-      });
 
       convertBtn.addEventListener("click", convertImages);
       downloadBtn.addEventListener("click", downloadAllImages);
@@ -346,8 +313,8 @@
             // Update progress (start)
             progressElement.style.width = "30%";
 
-            // Convert image
-            const converted = await convertImage(file, conversionType, quality);
+            // Convert image with default quality for JPG
+            const converted = await convertImage(file, conversionType);
             convertedFiles.push(converted);
 
             // Calculate size difference
@@ -378,7 +345,7 @@
       }
 
       // Convert a single image
-      function convertImage(file, conversionType, quality) {
+      function convertImage(file, conversionType) {
         return new Promise((resolve, reject) => {
           const reader = new FileReader();
           reader.readAsDataURL(file);
@@ -400,7 +367,8 @@
               let newFileName;
               if (conversionType === "png-to-jpg") {
                 outputFormat = "image/jpeg";
-                dataURL = canvas.toDataURL(outputFormat, quality / 100);
+                // Using a fixed quality of 0.8 (80%)
+                dataURL = canvas.toDataURL(outputFormat, 0.8);
                 newFileName = file.name.replace(/\.[^.]+$/, ".jpg");
               } else if (conversionType === "jpg-to-png") {
                 outputFormat = "image/png";
