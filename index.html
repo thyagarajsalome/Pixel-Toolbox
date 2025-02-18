@@ -110,7 +110,7 @@
             (file, index) => `
                 <div class="file-item">
                     <span>${file.name}</span>
-                    <span>${String(index + 1).padStart(3, "0")}.jpg</span>
+                    <span>${index + 1}.jpg</span>
                 </div>
             `
           )
@@ -121,7 +121,7 @@
         const zip = new JSZip();
 
         for (let i = 0; i < files.length; i++) {
-          const newName = `${String(i + 1).padStart(3, "0")}.jpg`;
+          const newName = `${i + 1}.jpg`;
           const blob = await files[i].arrayBuffer();
           zip.file(newName, blob);
         }
