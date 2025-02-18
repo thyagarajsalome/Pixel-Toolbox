@@ -52,11 +52,17 @@
         border-color: #007bff;
         background: #f0f8ff;
       }
+      .warning {
+        color: #ff0000;
+        display: none;
+        margin-top: 10px;
+      }
     </style>
   </head>
   <body>
     <div class="container">
       <h1>File Renamer</h1>
+      <p>Files will be renamed from 001.jpg to 020.jpg</p>
       <div class="drag-area" id="dropZone">
         Drop JPG files here or click to select
         <input
@@ -66,6 +72,9 @@
           accept=".jpg"
           style="display: none"
         />
+      </div>
+      <div class="warning" id="warning">
+        Warning: Only the first 20 files will be renamed.
       </div>
       <div class="file-list" id="fileList"></div>
       <button onclick="downloadFiles()" id="downloadBtn" style="display: none">
@@ -79,6 +88,7 @@
       const fileInput = document.getElementById("fileInput");
       const fileList = document.getElementById("fileList");
       const downloadBtn = document.getElementById("downloadBtn");
+      const warning = document.getElementById("warning");
 
       dropZone.addEventListener("click", () => fileInput.click());
       dropZone.addEventListener("dragover", (e) => {
@@ -100,28 +110,40 @@
           file.name.toLowerCase().endsWith(".jpg")
         );
 
+        if (files.length > 20) {
+          warning.style.display = "block";
+        } else {
+          warning.style.display = "none";
+        }
+
         displayFiles();
         downloadBtn.style.display = files.length ? "block" : "none";
       }
 
       function displayFiles() {
         fileList.innerHTML = files
-          .map(
-            (file, index) => `
+          .map((file, index) => {
+            const newName =
+              index < 20
+                ? `${(index + 1).toString().padStart(3, "0")}.jpg`
+                : "Not renamed (exceeded limit)";
+
+            return `
                 <div class="file-item">
                     <span>${file.name}</span>
-                    <span>${index + 1}.jpg</span>
+                    <span>${newName}</span>
                 </div>
-            `
-          )
+            `;
+          })
           .join("");
       }
 
       async function downloadFiles() {
         const zip = new JSZip();
+        const filesCount = Math.min(files.length, 20); // Limit to 20 files
 
-        for (let i = 0; i < files.length; i++) {
-          const newName = `${i + 1}.jpg`;
+        for (let i = 0; i < filesCount; i++) {
+          const newName = `${(i + 1).toString().padStart(3, "0")}.jpg`;
           const blob = await files[i].arrayBuffer();
           zip.file(newName, blob);
         }
