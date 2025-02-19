@@ -2,21 +2,145 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>JPG Image Compressor</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PixelToolbox - JPG Image Compressor</title>
+
+    <!-- SEO & Social Meta Tags -->
+    <meta
+      name="description"
+      content="PixelToolbox JPG Image Compressor - Compress your JPG images quickly without significant loss in quality using our user-friendly online tool."
+    />
+    <meta
+      name="keywords"
+      content="PixelToolbox, image compressor, JPG compressor, online image compression, JPG compression"
+    />
+    <meta name="author" content="Your Name or Company" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://example.com/jpg-compressor" />
+    <meta property="og:title" content="PixelToolbox - JPG Image Compressor" />
+    <meta
+      property="og:description"
+      content="Easily compress your JPG images with PixelToolbox without significant quality loss."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://example.com/jpg-compressor" />
+    <meta property="og:image" content="https://example.com/og-image.jpg" />
+
+    <!-- Inline CSS for Fast Loading and Consistent GUI -->
     <style>
+      /* Smooth scrolling */
+      html {
+        scroll-behavior: smooth;
+      }
+      /* Reset & Body */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
       body {
         font-family: Arial, sans-serif;
-        max-width: 800px;
-        margin: 40px auto;
-        padding: 20px;
-        background: #f5f5f5;
+        background-color: #f8f9fa;
+        color: #333;
+        line-height: 1.6;
       }
+      /* Navigation Bar */
+      nav {
+        background-color: #fff;
+        border-bottom: 1px solid #e0e0e0;
+        padding: 10px 20px;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+      .navbar-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+      }
+      .nav-logo {
+        display: flex;
+        align-items: center;
+        font-size: 1.5em;
+        font-weight: bold;
+        color: #333;
+      }
+      .nav-logo svg {
+        margin-right: 8px;
+      }
+      .nav-menu {
+        list-style: none;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      .nav-item {
+        margin-left: 20px;
+      }
+      .nav-item a {
+        text-decoration: none;
+        color: #333;
+        padding: 8px 12px;
+        display: block;
+      }
+      .nav-item a:hover {
+        background-color: #e9ecef;
+        border-radius: 4px;
+      }
+      .menu-toggle {
+        display: none;
+        background: none;
+        border: none;
+        font-size: 1.5em;
+        cursor: pointer;
+      }
+      @media (max-width: 768px) {
+        .menu-toggle {
+          display: block;
+        }
+        .nav-menu {
+          display: none;
+          width: 100%;
+          flex-direction: column;
+        }
+        .nav-menu.active {
+          display: flex;
+        }
+        .nav-item {
+          margin-left: 0;
+          width: 100%;
+          text-align: center;
+        }
+      }
+      /* Hero Section */
+      .hero {
+        text-align: center;
+        padding: 40px 20px;
+        background-color: #e9ecef;
+        margin-bottom: 30px;
+      }
+      .hero h1 {
+        font-size: 2.5em;
+        margin-bottom: 10px;
+      }
+      .hero p {
+        font-size: 1.1em;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+      /* Main Container */
       .container {
-        background: white;
+        max-width: 1200px;
+        margin: 0 auto 40px auto;
         padding: 20px;
+        background: #fff;
         border-radius: 8px;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       }
+      /* Drag & Drop Area */
       .drag-area {
         border: 2px dashed #ccc;
         padding: 20px;
@@ -27,11 +151,15 @@
         align-items: center;
         justify-content: center;
         flex-direction: column;
+        border-radius: 8px;
+        background: #fdfdfd;
+        cursor: pointer;
       }
       .drag-area.active {
-        border-color: #28a745;
-        background: #f0fff0;
+        border-color: #007bff;
+        background: #e7f0fd;
       }
+      /* Quality Controls */
       .quality-controls {
         margin: 20px 0;
         padding: 15px;
@@ -39,10 +167,17 @@
         border-radius: 8px;
         background: #fafafa;
       }
+      .quality-controls h3 {
+        margin-bottom: 10px;
+      }
+      label {
+        margin-right: 10px;
+      }
       .quality-slider {
         width: 100%;
         margin: 10px 0;
       }
+      /* File List */
       .file-list {
         margin: 20px 0;
         padding: 10px;
@@ -84,12 +219,13 @@
         align-items: center;
       }
       .percentage {
-        color: #28a745;
+        color: #007bff;
         font-weight: bold;
         margin-right: 10px;
       }
+      /* Buttons */
       button {
-        background: #28a745;
+        background: #007bff;
         color: white;
         border: none;
         padding: 10px 20px;
@@ -97,13 +233,14 @@
         cursor: pointer;
         margin-right: 10px;
       }
-      button:hover {
-        background: #218838;
+      button:hover:not(:disabled) {
+        background: #0056b3;
       }
       button:disabled {
         background: #cccccc;
         cursor: not-allowed;
       }
+      /* Progress Bar */
       .progress-bar {
         height: 5px;
         width: 100%;
@@ -113,7 +250,7 @@
       }
       .progress {
         height: 100%;
-        background-color: #28a745;
+        background-color: #007bff;
         border-radius: 2px;
         width: 0%;
         transition: width 0.3s ease;
@@ -121,10 +258,54 @@
     </style>
   </head>
   <body>
-    <div class="container">
+    <!-- Navigation Bar -->
+    <nav>
+      <div class="navbar-container">
+        <div class="nav-logo">
+          <!-- Custom SVG Logo for PixelToolbox -->
+          <svg
+            width="30"
+            height="30"
+            viewBox="0 0 30 30"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <rect
+              x="2"
+              y="2"
+              width="26"
+              height="26"
+              stroke="#333"
+              stroke-width="2"
+              fill="none"
+            />
+            <text x="15" y="21" font-size="12" text-anchor="middle" fill="#333">
+              PT
+            </text>
+          </svg>
+          PixelToolbox
+        </div>
+        <button class="menu-toggle" id="menuToggle">
+          <span class="hamburger">&#9776;</span>
+          <span class="close-icon" style="display: none">&times;</span>
+        </button>
+        <ul class="nav-menu">
+          <li class="nav-item"><a href="index.html">Home</a></li>
+          <li class="nav-item"><a href="about.html">About</a></li>
+          <li class="nav-item"><a href="tools.html">Tools</a></li>
+          <li class="nav-item"><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero">
       <h1>JPG Image Compressor</h1>
       <p>Compress your JPG images without significant loss in quality</p>
+    </div>
 
+    <!-- Main Content Container -->
+    <div class="container">
+      <!-- Drag & Drop Area -->
       <div class="drag-area" id="dropZone">
         <div>Drop JPG files here or click to select</div>
         <input
@@ -136,6 +317,7 @@
         />
       </div>
 
+      <!-- Quality Controls -->
       <div class="quality-controls">
         <h3>Compression Settings</h3>
         <label for="quality">Quality: <span id="qualityValue">80</span>%</label>
@@ -150,14 +332,18 @@
         <p>Lower quality = smaller file size (may affect image appearance)</p>
       </div>
 
+      <!-- File List -->
       <div class="file-list" id="fileList"></div>
 
+      <!-- Action Buttons -->
       <div>
         <button id="compressBtn" disabled>Compress Images</button>
         <button id="downloadBtn" disabled>Download All</button>
       </div>
     </div>
 
+    <!-- JSZip Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
     <script>
       // Elements
       const dropZone = document.getElementById("dropZone");
@@ -198,8 +384,8 @@
         e.preventDefault();
         dropZone.classList.remove("active");
 
-        const fileList = e.target.files || e.dataTransfer.files;
-        files = Array.from(fileList).filter(
+        const fileListObj = e.target.files || e.dataTransfer.files;
+        files = Array.from(fileListObj).filter(
           (file) =>
             file.type === "image/jpeg" ||
             file.name.toLowerCase().endsWith(".jpg") ||
@@ -334,21 +520,13 @@
             img.src = event.target.result;
 
             img.onload = function () {
-              // Create canvas for compression
               const canvas = document.createElement("canvas");
               const ctx = canvas.getContext("2d");
-
-              // Maintain original dimensions
               canvas.width = img.width;
               canvas.height = img.height;
-
-              // Draw image on canvas
               ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
-              // Get compressed data URL
               const dataURL = canvas.toDataURL("image/jpeg", quality / 100);
-
-              // Convert to Blob
               const byteString = atob(dataURL.split(",")[1]);
               const mimeType = dataURL
                 .split(",")[0]
@@ -356,7 +534,6 @@
                 .split(";")[0];
               const arrayBuffer = new ArrayBuffer(byteString.length);
               const uint8Array = new Uint8Array(arrayBuffer);
-
               for (let i = 0; i < byteString.length; i++) {
                 uint8Array[i] = byteString.charCodeAt(i);
               }
@@ -366,7 +543,6 @@
                 type: "image/jpeg",
                 lastModified: new Date().getTime(),
               });
-
               resolve(compressedFile);
             };
 
@@ -381,7 +557,7 @@
         });
       }
 
-      // Download all compressed images
+      // Download all compressed images as a ZIP file
       async function downloadAllImages() {
         if (compressedFiles.length === 0) return;
 
@@ -398,7 +574,23 @@
         link.download = "compressed_images.zip";
         link.click();
       }
+
+      // Mobile menu toggle for consistency with PixelToolbox design
+      document
+        .getElementById("menuToggle")
+        .addEventListener("click", function () {
+          const navMenu = document.querySelector(".nav-menu");
+          navMenu.classList.toggle("active");
+          const hamburger = this.querySelector(".hamburger");
+          const closeIcon = this.querySelector(".close-icon");
+          if (navMenu.classList.contains("active")) {
+            hamburger.style.display = "none";
+            closeIcon.style.display = "inline";
+          } else {
+            hamburger.style.display = "inline";
+            closeIcon.style.display = "none";
+          }
+        });
     </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
   </body>
 </html>

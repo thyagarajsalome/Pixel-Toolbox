@@ -2,21 +2,164 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Image Converter (PNG ↔ JPG)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PixelToolbox - Image Converter (PNG ↔ JPG)</title>
+
+    <!-- SEO & Social Meta Tags -->
+    <meta
+      name="description"
+      content="PixelToolbox Image Converter: Convert your images between PNG and JPG formats quickly and easily. Enjoy a fast, free, and user-friendly online conversion tool."
+    />
+    <meta
+      name="keywords"
+      content="PixelToolbox, image converter, PNG to JPG, JPG to PNG, online tools, image conversion"
+    />
+    <meta name="author" content="Your Name or Company" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://example.com/image-converter" />
+    <meta
+      property="og:title"
+      content="PixelToolbox - Image Converter (PNG ↔ JPG)"
+    />
+    <meta
+      property="og:description"
+      content="Convert your images between PNG and JPG formats effortlessly with PixelToolbox."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://example.com/image-converter" />
+    <meta property="og:image" content="https://example.com/og-image.jpg" />
+
+    <!-- Inline CSS for Fast Loading and Consistent GUI -->
     <style>
+      /* Smooth Scrolling */
+      html {
+        scroll-behavior: smooth;
+      }
+      /* Reset & Body */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
       body {
         font-family: Arial, sans-serif;
-        max-width: 800px;
-        margin: 40px auto;
-        padding: 20px;
-        background: #f5f5f5;
+        background-color: #f8f9fa;
+        color: #333;
+        line-height: 1.6;
       }
+      /* Navigation Bar */
+      nav {
+        background-color: #fff;
+        border-bottom: 1px solid #e0e0e0;
+        padding: 10px 20px;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+      .navbar-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+      }
+      .nav-logo {
+        display: flex;
+        align-items: center;
+        font-size: 1.5em;
+        font-weight: bold;
+        color: #333;
+      }
+      .nav-logo svg {
+        margin-right: 8px;
+      }
+      .nav-menu {
+        list-style: none;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      .nav-item {
+        margin-left: 20px;
+      }
+      .nav-item a {
+        text-decoration: none;
+        color: #333;
+        padding: 8px 12px;
+        display: block;
+      }
+      .nav-item a:hover {
+        background-color: #e9ecef;
+        border-radius: 4px;
+      }
+      .menu-toggle {
+        display: none;
+        background: none;
+        border: none;
+        font-size: 1.5em;
+        cursor: pointer;
+      }
+      @media (max-width: 768px) {
+        .menu-toggle {
+          display: block;
+        }
+        .nav-menu {
+          display: none;
+          width: 100%;
+          flex-direction: column;
+        }
+        .nav-menu.active {
+          display: flex;
+        }
+        .nav-item {
+          margin-left: 0;
+          width: 100%;
+          text-align: center;
+        }
+      }
+      /* Hero Section */
+      .hero {
+        text-align: center;
+        padding: 40px 20px;
+        background-color: #e9ecef;
+        margin-bottom: 30px;
+      }
+      .hero h1 {
+        font-size: 2.5em;
+        margin-bottom: 10px;
+      }
+      .hero p {
+        font-size: 1.1em;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+      /* Main Container */
       .container {
-        background: white;
+        max-width: 1200px;
+        margin: 0 auto 40px auto;
         padding: 20px;
+        background: #fff;
         border-radius: 8px;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       }
+      /* Conversion Controls */
+      .conversion-controls {
+        margin: 20px 0;
+        padding: 15px;
+        border: 1px solid #eee;
+        border-radius: 8px;
+        background: #fafafa;
+      }
+      .conversion-controls h3 {
+        margin-bottom: 10px;
+      }
+      select {
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      /* Drag & Drop Area */
       .drag-area {
         border: 2px dashed #ccc;
         padding: 20px;
@@ -27,18 +170,14 @@
         align-items: center;
         justify-content: center;
         flex-direction: column;
+        border-radius: 8px;
+        background: #fdfdfd;
       }
       .drag-area.active {
-        border-color: #28a745;
-        background: #f0fff0;
+        border-color: #007bff;
+        background: #e7f0fd;
       }
-      .conversion-controls {
-        margin: 20px 0;
-        padding: 15px;
-        border: 1px solid #eee;
-        border-radius: 8px;
-        background: #fafafa;
-      }
+      /* File List */
       .file-list {
         margin: 20px 0;
         padding: 10px;
@@ -80,12 +219,13 @@
         align-items: center;
       }
       .percentage {
-        color: #28a745;
+        color: #007bff;
         font-weight: bold;
         margin-right: 10px;
       }
+      /* Buttons */
       button {
-        background: #28a745;
+        background: #007bff;
         color: white;
         border: none;
         padding: 10px 20px;
@@ -93,13 +233,14 @@
         cursor: pointer;
         margin-right: 10px;
       }
-      button:hover {
-        background: #218838;
+      button:hover:not(:disabled) {
+        background: #0056b3;
       }
       button:disabled {
         background: #cccccc;
         cursor: not-allowed;
       }
+      /* Progress Bar */
       .progress-bar {
         height: 5px;
         width: 100%;
@@ -109,7 +250,7 @@
       }
       .progress {
         height: 100%;
-        background-color: #28a745;
+        background-color: #007bff;
         border-radius: 2px;
         width: 0%;
         transition: width 0.3s ease;
@@ -117,10 +258,53 @@
     </style>
   </head>
   <body>
-    <div class="container">
-      <h1>Image Converter (PNG ↔ JPG)</h1>
-      <p>Convert your images between PNG and JPG formats</p>
+    <!-- Navigation Bar -->
+    <nav>
+      <div class="navbar-container">
+        <div class="nav-logo">
+          <!-- Custom SVG Logo for PixelToolbox -->
+          <svg
+            width="30"
+            height="30"
+            viewBox="0 0 30 30"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <rect
+              x="2"
+              y="2"
+              width="26"
+              height="26"
+              stroke="#333"
+              stroke-width="2"
+              fill="none"
+            />
+            <text x="15" y="21" font-size="12" text-anchor="middle" fill="#333">
+              PT
+            </text>
+          </svg>
+          PixelToolbox
+        </div>
+        <button class="menu-toggle" id="menuToggle">
+          <span class="hamburger">&#9776;</span>
+          <span class="close-icon" style="display: none">&times;</span>
+        </button>
+        <ul class="nav-menu">
+          <li class="nav-item"><a href="index.html">Home</a></li>
+          <li class="nav-item"><a href="about.html">About</a></li>
+          <li class="nav-item"><a href="tools.html">Tools</a></li>
+          <li class="nav-item"><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+    </nav>
 
+    <!-- Hero Section -->
+    <div class="hero">
+      <h1>Image Converter</h1>
+      <p>Convert your images between PNG and JPG formats effortlessly.</p>
+    </div>
+
+    <!-- Main Content Container -->
+    <div class="container">
       <!-- Conversion Type Controls -->
       <div class="conversion-controls">
         <h3>Conversion Type</h3>
@@ -133,13 +317,7 @@
       <!-- Drag & Drop Area -->
       <div class="drag-area" id="dropZone">
         <div>Drop files here or click to select</div>
-        <input
-          type="file"
-          id="fileInput"
-          multiple
-          accept=".png"
-          style="display: none"
-        />
+        <input type="file" id="fileInput" multiple style="display: none" />
       </div>
 
       <!-- File List -->
@@ -367,7 +545,6 @@
               let newFileName;
               if (conversionType === "png-to-jpg") {
                 outputFormat = "image/jpeg";
-                // Using a fixed quality of 0.8 (80%)
                 dataURL = canvas.toDataURL(outputFormat, 0.8);
                 newFileName = file.name.replace(/\.[^.]+$/, ".jpg");
               } else if (conversionType === "jpg-to-png") {
@@ -424,6 +601,23 @@
         link.download = "converted_images.zip";
         link.click();
       }
+
+      // Mobile menu toggle for consistency with PixelToolbox design
+      document
+        .getElementById("menuToggle")
+        .addEventListener("click", function () {
+          const navMenu = document.querySelector(".nav-menu");
+          navMenu.classList.toggle("active");
+          const hamburger = this.querySelector(".hamburger");
+          const closeIcon = this.querySelector(".close-icon");
+          if (navMenu.classList.contains("active")) {
+            hamburger.style.display = "none";
+            closeIcon.style.display = "inline";
+          } else {
+            hamburger.style.display = "inline";
+            closeIcon.style.display = "none";
+          }
+        });
     </script>
   </body>
 </html>

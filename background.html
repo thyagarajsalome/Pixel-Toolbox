@@ -2,35 +2,163 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Background Remover - Multiple Images</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PixelToolbox - Background Remover</title>
+
+    <!-- SEO & Social Meta Tags -->
+    <meta
+      name="description"
+      content="PixelToolbox Background Remover - Remove backgrounds from multiple images effortlessly. Fast, free, and user-friendly online tool for image editing."
+    />
+    <meta
+      name="keywords"
+      content="PixelToolbox, background remover, online tools, image editing, remove background, multiple images"
+    />
+    <meta name="author" content="Your Name or Company" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://example.com/background-remover" />
+    <meta property="og:title" content="PixelToolbox - Background Remover" />
+    <meta
+      property="og:description"
+      content="Remove image backgrounds quickly and easily with PixelToolbox's Background Remover."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://example.com/background-remover" />
+    <meta property="og:image" content="https://example.com/og-image.jpg" />
+
+    <!-- Inline CSS for Fast Loading and Consistent GUI -->
     <style>
+      /* Smooth scrolling */
+      html {
+        scroll-behavior: smooth;
+      }
+
+      /* Reset & Body */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
       body {
         font-family: Arial, sans-serif;
-        background: #f4f4f4;
-        text-align: center;
-        margin: 0;
-        padding: 20px;
+        background-color: #f8f9fa;
+        color: #333;
+        line-height: 1.6;
       }
-      h1 {
+
+      /* Navigation Bar */
+      nav {
+        background-color: #fff;
+        border-bottom: 1px solid #e0e0e0;
+        padding: 10px 20px;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+      .navbar-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+      }
+      .nav-logo {
+        display: flex;
+        align-items: center;
+        font-size: 1.5em;
+        font-weight: bold;
         color: #333;
       }
-      #canvas {
-        border: 1px solid #ccc;
-        max-width: 100%;
-        margin-top: 20px;
-        cursor: crosshair;
+      .nav-logo svg {
+        margin-right: 8px;
       }
+      .nav-menu {
+        list-style: none;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      .nav-item {
+        margin-left: 20px;
+      }
+      .nav-item a {
+        text-decoration: none;
+        color: #333;
+        padding: 8px 12px;
+        display: block;
+      }
+      .nav-item a:hover {
+        background-color: #e9ecef;
+        border-radius: 4px;
+      }
+      /* Mobile Menu Toggle (if needed) */
+      .menu-toggle {
+        display: none;
+        background: none;
+        border: none;
+        font-size: 1.5em;
+        cursor: pointer;
+      }
+      @media (max-width: 768px) {
+        .menu-toggle {
+          display: block;
+        }
+        .nav-menu {
+          display: none;
+          width: 100%;
+          flex-direction: column;
+        }
+        .nav-menu.active {
+          display: flex;
+        }
+        .nav-item {
+          margin-left: 0;
+          width: 100%;
+          text-align: center;
+        }
+      }
+
+      /* Main Container */
+      .container {
+        max-width: 1200px;
+        margin: 40px auto;
+        padding: 0 20px;
+      }
+
+      /* Hero Section for Page Title */
+      .hero {
+        text-align: center;
+        padding: 40px 20px;
+        background-color: #e9ecef;
+        margin-bottom: 30px;
+      }
+      .hero h1 {
+        font-size: 2.5em;
+        margin-bottom: 10px;
+      }
+      .hero p {
+        font-size: 1.1em;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      /* Controls Styling */
       .controls {
-        margin-top: 20px;
+        margin: 20px 0;
+        text-align: center;
       }
       .control-group {
-        margin-bottom: 10px;
+        margin-bottom: 15px;
       }
       label {
         margin-right: 10px;
       }
       input[type="range"] {
         vertical-align: middle;
+      }
+      input[type="file"] {
+        padding: 10px;
       }
       button {
         padding: 10px 20px;
@@ -56,7 +184,17 @@
         vertical-align: middle;
         margin-left: 10px;
       }
-      /* Gallery styles */
+
+      /* Canvas Styling */
+      #canvas {
+        border: 1px solid #ccc;
+        max-width: 100%;
+        margin: 20px auto;
+        display: block;
+        cursor: crosshair;
+      }
+
+      /* Gallery Styling */
       .gallery {
         margin-top: 20px;
         display: flex;
@@ -70,6 +208,7 @@
         object-fit: cover;
         border: 2px solid transparent;
         cursor: pointer;
+        border-radius: 4px;
       }
       .thumbnail.active {
         border: 2px solid #007bff;
@@ -77,33 +216,87 @@
     </style>
   </head>
   <body>
-    <h1>Background Remover - Multiple Images</h1>
-    <div class="controls">
-      <div class="control-group">
-        <!-- Allow multiple file selection -->
-        <input type="file" id="upload" accept="image/jpeg" multiple />
+    <!-- Navigation Bar -->
+    <nav>
+      <div class="navbar-container">
+        <div class="nav-logo">
+          <!-- Custom SVG Logo for PixelToolbox -->
+          <svg
+            width="30"
+            height="30"
+            viewBox="0 0 30 30"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <rect
+              x="2"
+              y="2"
+              width="26"
+              height="26"
+              stroke="#333"
+              stroke-width="2"
+              fill="none"
+            />
+            <text x="15" y="21" font-size="12" text-anchor="middle" fill="#333">
+              PT
+            </text>
+          </svg>
+          PixelToolbox
+        </div>
+        <button class="menu-toggle" id="menuToggle">
+          <span class="hamburger">&#9776;</span>
+          <span class="close-icon" style="display: none">&times;</span>
+        </button>
+        <ul class="nav-menu">
+          <li class="nav-item"><a href="index.html">Home</a></li>
+          <li class="nav-item"><a href="about.html">About</a></li>
+          <li class="nav-item"><a href="tools.html">Tools</a></li>
+          <li class="nav-item"><a href="contact.html">Contact</a></li>
+        </ul>
       </div>
-      <!-- Gallery to display uploaded image thumbnails -->
-      <div class="gallery" id="gallery"></div>
-      <div class="control-group">
-        <button id="removeButton" disabled>Remove Background</button>
-        <button id="resetButton" disabled>Reset</button>
-        <button id="downloadButton" disabled>Download PNG</button>
-      </div>
-      <div class="control-group">
-        <label for="tolerance">
-          Tolerance: <span id="toleranceValue">50</span>
-        </label>
-        <input type="range" id="tolerance" min="0" max="100" value="50" />
-      </div>
-      <div class="control-group">
-        <p>Click on the image (in the canvas) to select the background color</p>
-        <span>Selected Color:</span>
-        <div id="colorDisplay"></div>
-      </div>
-    </div>
-    <canvas id="canvas"></canvas>
+    </nav>
 
+    <!-- Main Content -->
+    <main>
+      <div class="hero">
+        <h1>Background Remover - Multiple Images</h1>
+        <p>Effortlessly remove backgrounds from your images.</p>
+      </div>
+
+      <div class="container">
+        <!-- Controls -->
+        <div class="controls">
+          <div class="control-group">
+            <input type="file" id="upload" accept="image/jpeg" multiple />
+          </div>
+          <div class="control-group">
+            <button id="removeButton" disabled>Remove Background</button>
+            <button id="resetButton" disabled>Reset</button>
+            <button id="downloadButton" disabled>Download PNG</button>
+          </div>
+          <div class="control-group">
+            <label for="tolerance">
+              Tolerance: <span id="toleranceValue">50</span>
+            </label>
+            <input type="range" id="tolerance" min="0" max="100" value="50" />
+          </div>
+          <div class="control-group">
+            <p>
+              Click on the image (in the canvas) to select the background color
+            </p>
+            <span>Selected Color:</span>
+            <div id="colorDisplay"></div>
+          </div>
+        </div>
+
+        <!-- Canvas -->
+        <canvas id="canvas"></canvas>
+
+        <!-- Gallery -->
+        <div class="gallery" id="gallery"></div>
+      </div>
+    </main>
+
+    <!-- JavaScript -->
     <script>
       // Global variables to store the images and current state
       let images = []; // Array to store uploaded images info
@@ -132,7 +325,7 @@
       upload.addEventListener("change", (e) => {
         const files = e.target.files;
         if (!files.length) return;
-        images = []; // Reset images array
+        images = new Array(files.length); // Preallocate array with correct length
         gallery.innerHTML = ""; // Clear previous thumbnails
         currentIndex = -1;
 
@@ -149,17 +342,19 @@
             thumb.src = imgSrc;
             thumb.classList.add("thumbnail");
             thumb.title = file.name;
-            thumb.addEventListener("click", () => {
-              selectImage(index);
+            // Store the original index in a data attribute
+            thumb.dataset.index = index;
+            thumb.addEventListener("click", (e) => {
+              selectImage(parseInt(e.target.dataset.index, 10));
             });
             gallery.appendChild(thumb);
-            // Store the image info
-            images.push({
+            // Store the image info at the correct index
+            images[index] = {
               file: file,
               src: imgSrc,
               thumbnailElement: thumb,
-            });
-            // Auto-select the first image uploaded
+            };
+            // Auto-select the first image once it loads
             if (currentIndex === -1) {
               selectImage(0);
             }
@@ -175,7 +370,9 @@
         colorDisplay.style.backgroundColor = "transparent";
         // Remove active styling from all thumbnails and highlight the selected one
         images.forEach((imgObj) => {
-          imgObj.thumbnailElement.classList.remove("active");
+          if (imgObj && imgObj.thumbnailElement) {
+            imgObj.thumbnailElement.classList.remove("active");
+          }
         });
         images[index].thumbnailElement.classList.add("active");
 
@@ -255,6 +452,23 @@
         link.href = canvas.toDataURL("image/png");
         link.click();
       });
+
+      // Mobile menu toggle (for consistency with PixelToolbox design)
+      document
+        .getElementById("menuToggle")
+        .addEventListener("click", function () {
+          const navMenu = document.querySelector(".nav-menu");
+          navMenu.classList.toggle("active");
+          const hamburger = this.querySelector(".hamburger");
+          const closeIcon = this.querySelector(".close-icon");
+          if (navMenu.classList.contains("active")) {
+            hamburger.style.display = "none";
+            closeIcon.style.display = "inline";
+          } else {
+            hamburger.style.display = "inline";
+            closeIcon.style.display = "none";
+          }
+        });
     </script>
   </body>
 </html>
