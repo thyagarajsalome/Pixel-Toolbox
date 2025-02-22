@@ -195,6 +195,7 @@
         padding: 15px;
       }
       .card-title {
+        color: rgb(100, 100, 100);
         font-size: 1.25em;
         margin-bottom: 10px;
       }
@@ -348,68 +349,7 @@
     <!-- Tools Section (Cards) -->
     <section id="tools">
       <h2>Our Tools</h2>
-      <div class="card-container">
-        <!-- Card 1: Background Remover -->
-        <div class="card">
-          <a href="./background.html" target="_blank">
-            <div class="card-content">
-              <h3 class="card-title">Background Remover</h3>
-              <p class="card-description">
-                Easily remove backgrounds from your images with just a few
-                clicks.
-              </p>
-              <div class="card-tags">
-                <span class="card-tag">Image Editing</span>
-              </div>
-            </div>
-          </a>
-        </div>
-        <!-- Card 2: Convertor -->
-        <div class="card">
-          <a href="./convertor.html" target="_blank">
-            <div class="card-content">
-              <h3 class="card-title">Convertor</h3>
-              <p class="card-description">
-                Effortlessly convert between JPG and PNG formats.
-              </p>
-              <div class="card-tags">
-                <span class="card-tag">Conversion</span>
-                <span class="card-tag">Image Processing</span>
-              </div>
-            </div>
-          </a>
-        </div>
-        <!-- Card 3: File Rename -->
-        <div class="card">
-          <a href="./filename.html" target="_blank">
-            <div class="card-content">
-              <h3 class="card-title">File Rename</h3>
-              <p class="card-description">
-                Quickly batch rename your files for better organization.
-              </p>
-              <div class="card-tags">
-                <span class="card-tag">Utilities</span>
-                <span class="card-tag">Productivity</span>
-              </div>
-            </div>
-          </a>
-        </div>
-        <!-- Card 4: Compressor -->
-        <div class="card">
-          <a href="./imageCompressor.html" target="_blank">
-            <div class="card-content">
-              <h3 class="card-title">Compressor</h3>
-              <p class="card-description">
-                Compress your files to optimize storage and speed up uploads.
-              </p>
-              <div class="card-tags">
-                <span class="card-tag">File Management</span>
-                <span class="card-tag">Compression</span>
-              </div>
-            </div>
-          </a>
-        </div>
-      </div>
+      <div class="card-container"></div>
     </section>
 
     <!-- Contact Section -->
@@ -506,6 +446,66 @@
             closeIcon.style.display = "none";
           }
         });
+    </script>
+
+    <!-- JavaScript for Dynamically Generating Tools Cards -->
+    <script>
+      const tools = [
+        {
+          title: "Background Remover",
+          description:
+            "Easily remove backgrounds from your images with just a few clicks.",
+          href: "./background.html",
+          tags: ["Image Editing"],
+        },
+        {
+          title: "Convertor",
+          description: "Effortlessly convert between JPG and PNG formats.",
+          href: "./convertor.html",
+          tags: ["Conversion", "Image Processing"],
+        },
+        {
+          title: "File Rename",
+          description:
+            "Quickly batch rename your files for better organization.",
+          href: "./filename.html",
+          tags: ["Utilities", "Productivity"],
+        },
+        {
+          title: "Compressor",
+          description:
+            "Compress your files to optimize storage and speed up uploads.",
+          href: "./imageCompressor.html",
+          tags: ["File Management", "Compression"],
+        },
+        {
+          title: "RGB Color Generator",
+          description:
+            "Click one of the color buttons above to select a base color.",
+          href: "./colorGenerator.html",
+          tags: ["Color generator", "RGB Colors"],
+        },
+      ];
+
+      const container = document.querySelector(".card-container");
+      tools.forEach((tool) => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          <a href="${tool.href}" target="_blank">
+            <div class="card-content">
+              <h3 class="card-title">${tool.title}</h3>
+              <p class="card-description">${tool.description}</p>
+              <div class="card-tags">
+                ${tool.tags
+                  .map((tag) => `<span class="card-tag">${tag}</span>`)
+                  .join("")}
+              </div>
+            </div>
+          </a>
+        `;
+        container.appendChild(card);
+      });
     </script>
   </body>
 </html>
