@@ -399,6 +399,60 @@
       }
 
       /**
+       * Generate 30 additional “Moderate Brighter” variations for generic colors.
+       * These variations slightly increase lightness (from the base pastel value up to about 92)
+       * and include subtle changes in hue and saturation.
+       */
+      function generateModerateBrighterVariations(baseH, baseS, baseL) {
+        let variations = [];
+        for (let i = 0; i < 30; i++) {
+          // Slightly vary hue within ±10°
+          let newHue = clampHue(baseH + Math.round(-10 + (20 / 29) * i));
+          // Adjust saturation within ±3 of baseS
+          let newSaturation = Math.min(
+            100,
+            Math.max(0, baseS + Math.round(-3 + (6 / 29) * i))
+          );
+          // Increase lightness moderately (e.g., from 85 up to ~92)
+          let newLightness = Math.min(100, Math.round(baseL + (7 / 29) * i));
+          const rgb = hslToRgbString(newHue, newSaturation, newLightness);
+          variations.push({
+            h: newHue,
+            s: newSaturation,
+            l: newLightness,
+            rgb,
+          });
+        }
+        return variations;
+      }
+
+      /**
+       * Generate 30 additional “Moderate Brighter” red variations.
+       * Here the lightness is increased from 90 up to about 95.
+       */
+      function generateBrighterRedVariations() {
+        let variations = [];
+        const baseHue = 0;
+        const baseSaturation = 40;
+        for (let i = 0; i < 30; i++) {
+          let newHue = clampHue(baseHue + Math.round(-10 + (20 / 29) * i));
+          let newSaturation = Math.min(
+            100,
+            Math.max(0, baseSaturation + Math.round(-5 + (10 / 29) * i))
+          );
+          let newLightness = Math.round(90 + (5 / 29) * i);
+          const rgb = hslToRgbString(newHue, newSaturation, newLightness);
+          variations.push({
+            h: newHue,
+            s: newSaturation,
+            l: newLightness,
+            rgb,
+          });
+        }
+        return variations;
+      }
+
+      /**
        * Display the color variations.
        * Each swatch shows its RGB value and includes a delete (×) button.
        */
@@ -409,7 +463,7 @@
           const groupDiv = document.createElement("div");
           groupDiv.className = "color-group";
           const header = document.createElement("h2");
-          header.textContent = `Variations for "${group.color}"`;
+          header.textContent = group.color;
           groupDiv.appendChild(header);
           const swatchesContainer = document.createElement("div");
           swatchesContainer.className = "swatches";
@@ -443,17 +497,40 @@
 
       /**
        * Handle a color button selection.
-       * For non-gray/non-red selections, the base color is converted to a pastel version before generating variations.
+       * For “gray” and “red” we use custom branches.
+       * For “orange”, “blue”, “yellow”, and “green”, we add an extra group
+       * of moderate brighter variations.
        */
       function handleColorSelection(color) {
         const resultsContainer = document.getElementById("results");
         resultsContainer.innerHTML = "";
-        let variations = [];
-        if (color.toLowerCase() === "gray" || color.toLowerCase() === "grey") {
-          variations = generateGrayVariations();
-        } else if (color.toLowerCase() === "red") {
-          variations = generateRedVariations();
-        } else {
+        const lowerColor = color.toLowerCase();
+
+        if (lowerColor === "gray" || lowerColor === "grey") {
+          const defaultVariations = generateGrayVariations();
+          // Using the generic brighter function for gray as well.
+          const brighterVariations = generateModerateBrighterVariations(
+            0,
+            10,
+            85
+          );
+          displayAllVariations([
+            { color: color + " (Default)", variations: defaultVariations },
+            { color: color + " (Brighter)", variations: brighterVariations },
+          ]);
+        } else if (lowerColor === "red") {
+          const defaultVariations = generateRedVariations();
+          const brighterVariations = generateBrighterRedVariations();
+          displayAllVariations([
+            { color: color + " (Default)", variations: defaultVariations },
+            { color: color + " (Brighter)", variations: brighterVariations },
+          ]);
+        } else if (
+          lowerColor === "orange" ||
+          lowerColor === "blue" ||
+          lowerColor === "yellow" ||
+          lowerColor === "green"
+        ) {
           const hsl = parseColorToHSL(color);
           if (!hsl) {
             const errorDiv = document.createElement("div");
@@ -464,13 +541,40 @@
           }
           // Convert the base color to a pastel version.
           const pastelBase = toPastelColor(hsl.h, hsl.s, hsl.l);
-          variations = generateColorVariations(
+          const defaultVariations = generateColorVariations(
             pastelBase.h,
             pastelBase.s,
             pastelBase.l
           );
+          const brighterVariations = generateModerateBrighterVariations(
+            pastelBase.h,
+            pastelBase.s,
+            pastelBase.l
+          );
+          displayAllVariations([
+            { color: color + " (Default)", variations: defaultVariations },
+            { color: color + " (Brighter)", variations: brighterVariations },
+          ]);
+        } else {
+          // Generic branch for other colors (brown, pink, white, beige, taupe, etc.)
+          const hsl = parseColorToHSL(color);
+          if (!hsl) {
+            const errorDiv = document.createElement("div");
+            errorDiv.className = "error";
+            errorDiv.textContent = `Invalid color input: "${color}"`;
+            resultsContainer.appendChild(errorDiv);
+            return;
+          }
+          const pastelBase = toPastelColor(hsl.h, hsl.s, hsl.l);
+          const defaultVariations = generateColorVariations(
+            pastelBase.h,
+            pastelBase.s,
+            pastelBase.l
+          );
+          displayAllVariations([
+            { color: color + " (Default)", variations: defaultVariations },
+          ]);
         }
-        displayAllVariations([{ color: color, variations: variations }]);
       }
 
       // Attach event listeners to all color buttons.
