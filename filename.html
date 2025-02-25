@@ -8,7 +8,7 @@
     <!-- SEO & Social Meta Tags -->
     <meta
       name="description"
-      content="PixelToolbox File Renamer - Easily rename your JPG files in bulk from 001.jpg to 020.jpg."
+      content="PixelToolbox File Renamer - Easily rename your JPG files in bulk from 001.jpg to 250.jpg."
     />
     <meta
       name="keywords"
@@ -246,7 +246,7 @@
     <!-- Hero Section -->
     <div class="hero">
       <h1>File Renamer</h1>
-      <p>Files will be rename</p>
+      <p>Files will be renamed</p>
     </div>
 
     <!-- Main Content Container -->
@@ -262,7 +262,7 @@
         />
       </div>
       <div class="warning" id="warning">
-        Warning: Only the first 20 files will be renamed.
+        Warning: Only the first 250 files will be renamed.
       </div>
       <div class="file-list" id="fileList"></div>
       <button onclick="downloadFiles()" id="downloadBtn" style="display: none">
@@ -273,6 +273,7 @@
     <!-- JSZip Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
     <script>
+      const MAX_FILES = 250;
       let files = [];
       const dropZone = document.getElementById("dropZone");
       const fileInput = document.getElementById("fileInput");
@@ -298,7 +299,7 @@
         files = Array.from(selectedFiles).filter((file) =>
           file.name.toLowerCase().endsWith(".jpg")
         );
-        if (files.length > 20) {
+        if (files.length > MAX_FILES) {
           warning.style.display = "block";
         } else {
           warning.style.display = "none";
@@ -311,7 +312,7 @@
         fileListContainer.innerHTML = files
           .map((file, index) => {
             const newName =
-              index < 20
+              index < MAX_FILES
                 ? `${(index + 1).toString().padStart(3, "0")}.jpg`
                 : "Not renamed (exceeded limit)";
             return `
@@ -326,7 +327,7 @@
 
       async function downloadFiles() {
         const zip = new JSZip();
-        const filesCount = Math.min(files.length, 20);
+        const filesCount = Math.min(files.length, MAX_FILES);
         for (let i = 0; i < filesCount; i++) {
           const newName = `${(i + 1).toString().padStart(3, "0")}.jpg`;
           const blob = await files[i].arrayBuffer();
