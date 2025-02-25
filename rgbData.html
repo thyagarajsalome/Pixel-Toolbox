@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Data Converter</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: #f5f5f5;
+        margin: 20px;
+      }
+      .container {
+        max-width: 800px;
+        margin: auto;
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      h2 {
+        margin-top: 0;
+      }
+      textarea {
+        width: 100%;
+        height: 150px;
+        padding: 10px;
+        font-size: 14px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        resize: vertical;
+        margin-bottom: 10px;
+      }
+      select,
+      button {
+        padding: 10px;
+        font-size: 14px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        margin-right: 10px;
+      }
+      button {
+        cursor: pointer;
+      }
+      .output-label {
+        font-weight: bold;
+        margin-top: 10px;
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Data Converter</h2>
+      <p>
+        This converter transforms color data between two formats: <br /><strong
+          >RGB to Numbers:</strong
+        >
+        Converts <code>"rgb(42, 22, 16)"</code> into <code>42, 22, 16</code>.
+        <br /><strong>Numbers to RGB:</strong> Converts
+        <code>42, 22, 16</code> into <code>rgb(42, 22, 16)</code>.
+      </p>
+      <label for="inputData">Input Data:</label>
+      <textarea
+        id="inputData"
+        placeholder='Example:
+"001": "rgb(42, 22, 16)"
+"002": "rgb(255, 100, 50)"'
+      ></textarea>
+
+      <div>
+        <select id="conversionType">
+          <option value="forward">RGB to Numbers</option>
+          <option value="reverse">Numbers to RGB</option>
+        </select>
+        <button id="convertBtn">Convert</button>
+        <button id="downloadCsvBtn">Download CSV</button>
+      </div>
+
+      <label for="outputData" class="output-label">Output Data:</label>
+      <textarea
+        id="outputData"
+        readonly
+        placeholder="Converted data will appear here..."
+      ></textarea>
+    </div>
+
+    <script>
+      // Conversion logic
+      document
+        .getElementById("convertBtn")
+        .addEventListener("click", function () {
+          const conversionType =
+            document.getElementById("conversionType").value;
+          const inputData = document.getElementById("inputData").value;
+          let outputData = "";
+
+          // Split the input into separate lines (each line represents one color entry)
+          const lines = inputData.split("\n");
+
+          if (conversionType === "forward") {
+            // Convert from "rgb(42, 22, 16)" to "42, 22, 16"
+            lines.forEach((line) => {
+              // Use regex to find the rgb values
+              const rgbRegex = /rgb\(([^)]+)\)/;
+              const match = line.match(rgbRegex);
+              if (match && match[1]) {
+                outputData += match[1].trim() + "\n";
+              }
+            });
+          } else if (conversionType === "reverse") {
+            // Convert from "42, 22, 16" to "rgb(42, 22, 16)"
+            lines.forEach((line) => {
+              const trimmed = line.trim();
+              if (trimmed) {
+                outputData += "rgb(" + trimmed + ")" + "\n";
+              }
+            });
+          }
+
+          document.getElementById("outputData").value = outputData.trim();
+        });
+
+      // CSV file download logic
+      document
+        .getElementById("downloadCsvBtn")
+        .addEventListener("click", function () {
+          const csvContent = document.getElementById("outputData").value;
+          if (!csvContent) {
+            alert("No data to download. Please perform a conversion first.");
+            return;
+          }
+          const blob = new Blob([csvContent], {
+            type: "text/csv;charset=utf-8;",
+          });
+          const link = document.createElement("a");
+          if (link.download !== undefined) {
+            // feature detection
+            const url = URL.createObjectURL(blob);
+            link.setAttribute("href", url);
+            link.setAttribute("download", "output.csv");
+            link.style.visibility = "hidden";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+          }
+        });
+    </script>
+  </body>
+</html>
