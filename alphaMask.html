@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Alpha Masking Tool</title>
+    <style>
+      /* ============ ADOPTED STYLES ============ */
+
+      /* Smooth Scrolling */
+      html {
+        scroll-behavior: smooth;
+      }
+      /* Reset & Body */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f8f9fa;
+        color: #333;
+        line-height: 1.6;
+      }
+      /* Navigation Bar */
+      nav {
+        background-color: #fff;
+        border-bottom: 1px solid #e0e0e0;
+        padding: 10px 20px;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+      .navbar-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+      }
+      .nav-logo {
+        display: flex;
+        align-items: center;
+        font-size: 1.5em;
+        font-weight: bold;
+        color: #333;
+      }
+      .nav-menu {
+        list-style: none;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      .nav-item {
+        margin-left: 20px;
+      }
+      .nav-item a {
+        text-decoration: none;
+        color: #333;
+        padding: 8px 12px;
+        display: block;
+      }
+      .nav-item a:hover {
+        background-color: #e9ecef;
+        border-radius: 4px;
+      }
+      .menu-toggle {
+        display: none;
+        background: none;
+        border: none;
+        font-size: 1.5em;
+        cursor: pointer;
+      }
+      @media (max-width: 768px) {
+        .menu-toggle {
+          display: block;
+        }
+        .nav-menu {
+          display: none;
+          width: 100%;
+          flex-direction: column;
+        }
+        .nav-menu.active {
+          display: flex;
+        }
+        .nav-item {
+          margin-left: 0;
+          width: 100%;
+          text-align: center;
+        }
+      }
+      /* Hero Section */
+      .hero {
+        text-align: center;
+        padding: 40px 20px;
+        background-color: #e9ecef;
+        margin-bottom: 30px;
+      }
+      .hero h1 {
+        font-size: 2.5em;
+        margin-bottom: 10px;
+      }
+      .hero p {
+        font-size: 1.1em;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+      /* Main Container */
+      .container {
+        max-width: 1200px;
+        margin: 0 auto 40px auto;
+        padding: 20px;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      /* Conversion Controls / Upload Section */
+      .conversion-controls {
+        margin: 20px 0;
+        padding: 15px;
+        border: 1px solid #eee;
+        border-radius: 8px;
+        background: #fafafa;
+      }
+      .conversion-controls h3 {
+        margin-bottom: 10px;
+      }
+      /* Progress Bar */
+      .progress-section {
+        margin: 20px 0;
+      }
+      .progress-bar {
+        height: 5px;
+        width: 100%;
+        background-color: #e0e0e0;
+        border-radius: 2px;
+        margin-top: 5px;
+      }
+      .progress {
+        height: 100%;
+        background-color: #007bff;
+        border-radius: 2px;
+        width: 0%;
+        transition: width 0.3s ease;
+      }
+      /* Results */
+      .results-section {
+        margin: 20px 0;
+      }
+      .masked-image {
+        display: inline-block;
+        margin: 10px;
+        text-align: center;
+      }
+      .masked-image img {
+        max-width: 200px;
+        display: block;
+        margin-bottom: 5px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      /* Download All Button */
+      .download-all-btn {
+        background: #28a745;
+        color: #fff;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-top: 20px;
+        font-size: 1em;
+      }
+      .download-all-btn:hover {
+        background: #218838;
+      }
+      /* Buttons */
+      button {
+        background: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-right: 10px;
+      }
+      button:hover:not(:disabled) {
+        background: #0056b3;
+      }
+      button:disabled {
+        background: #cccccc;
+        cursor: not-allowed;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ========== NAVIGATION BAR ========== -->
+    <nav>
+      <div class="navbar-container">
+        <div class="nav-logo">Alpha Masking</div>
+        <button class="menu-toggle" id="menuToggle">☰</button>
+        <ul class="nav-menu" id="navMenu">
+          <li class="nav-item"><a href="./index.html">Home</a></li>
+          <li class="nav-item"><a href="#howToUse">How to Use</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- ========== HERO SECTION ========== -->
+    <section class="hero" id="hero">
+      <h1>Alpha Masking Tool</h1>
+      <p>
+        Easily remove black areas (from a B/W alpha mask) in your render images,
+        filling them with white, and export the final results as JPG files.
+      </p>
+    </section>
+
+    <!-- ========== MAIN CONTENT ========== -->
+    <div class="container" id="howToUse">
+      <h2>How to Use This Web App</h2>
+      <p>
+        1. Upload a black-and-white alpha image.<br />
+        2. Upload one or more render images (up to 250).<br />
+        3. Click "Mask Images" to replace all black areas (from the alpha) with
+        white in each render.<br />
+        4. Download all results as a ZIP file containing JPGs.
+      </p>
+
+      <!-- Conversion Controls / Upload Section -->
+      <div class="conversion-controls">
+        <h3>1) Upload Your Images</h3>
+        <label for="alphaUpload"><strong>Alpha (B/W) JPG:</strong></label>
+        <input type="file" id="alphaUpload" accept="image/jpeg, image/png" />
+
+        <br /><br />
+        <label for="renderUpload"><strong>Render JPG(s):</strong></label>
+        <input
+          type="file"
+          id="renderUpload"
+          accept="image/jpeg, image/png"
+          multiple
+        />
+
+        <br /><br />
+        <button id="maskButton" disabled>2) Mask Images</button>
+      </div>
+
+      <!-- Progress Section -->
+      <div class="progress-section">
+        <label><strong>Progress</strong></label>
+        <div class="progress-bar">
+          <div class="progress" id="progress"></div>
+        </div>
+      </div>
+
+      <!-- Results Section -->
+      <div class="results-section" id="resultsSection">
+        <!-- Masked images will appear here -->
+      </div>
+
+      <!-- Container for Download All button -->
+      <div id="downloadContainer"></div>
+    </div>
+
+    <!-- ========== JSZip and FileSaver Libraries ========== -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.0/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+
+    <script>
+      // ======== NAV TOGGLE FOR SMALL SCREENS ========
+      const menuToggle = document.getElementById("menuToggle");
+      const navMenu = document.getElementById("navMenu");
+      menuToggle.addEventListener("click", () => {
+        navMenu.classList.toggle("active");
+      });
+
+      // ======== ALPHA MASKING FUNCTIONALITY ========
+      const alphaUpload = document.getElementById("alphaUpload");
+      const renderUpload = document.getElementById("renderUpload");
+      const maskButton = document.getElementById("maskButton");
+      const progressBar = document.getElementById("progress");
+      const resultsSection = document.getElementById("resultsSection");
+      const downloadContainer = document.getElementById("downloadContainer");
+
+      let alphaImageData = null;
+      let alphaWidth = 0;
+      let alphaHeight = 0;
+      // Array to store masked image objects { filename, dataURL }
+      let maskedImages = [];
+
+      // 1) When user selects the alpha image
+      alphaUpload.addEventListener("change", function () {
+        if (!alphaUpload.files || alphaUpload.files.length === 0) {
+          maskButton.disabled = true;
+          return;
+        }
+
+        const file = alphaUpload.files[0];
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          const img = new Image();
+          img.onload = function () {
+            alphaWidth = img.width;
+            alphaHeight = img.height;
+
+            // Draw alpha onto a canvas to read pixel data
+            const alphaCanvas = document.createElement("canvas");
+            alphaCanvas.width = alphaWidth;
+            alphaCanvas.height = alphaHeight;
+            const alphaCtx = alphaCanvas.getContext("2d");
+            alphaCtx.drawImage(img, 0, 0);
+            alphaImageData = alphaCtx.getImageData(
+              0,
+              0,
+              alphaWidth,
+              alphaHeight
+            );
+
+            // Enable mask button if render images are also loaded
+            if (renderUpload.files && renderUpload.files.length > 0) {
+              maskButton.disabled = false;
+            }
+          };
+          img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
+
+      // 2) When user selects render images
+      renderUpload.addEventListener("change", function () {
+        if (alphaImageData && renderUpload.files.length > 0) {
+          maskButton.disabled = false;
+        } else {
+          maskButton.disabled = true;
+        }
+      });
+
+      // 3) On click "Mask Images"
+      maskButton.addEventListener("click", async function () {
+        if (
+          !alphaImageData ||
+          !renderUpload.files ||
+          renderUpload.files.length === 0
+        ) {
+          return;
+        }
+
+        // Clear previous results, progress bar, and download button
+        resultsSection.innerHTML = "";
+        downloadContainer.innerHTML = "";
+        progressBar.style.width = "0%";
+        maskedImages = [];
+
+        const files = Array.from(renderUpload.files);
+        const total = files.length;
+        let completed = 0;
+
+        for (const file of files) {
+          const maskedDataURL = await processMask(file);
+          completed++;
+          const percent = (completed / total) * 100;
+          progressBar.style.width = percent + "%";
+
+          // Display masked image
+          const container = document.createElement("div");
+          container.className = "masked-image";
+
+          const maskedImg = document.createElement("img");
+          maskedImg.src = maskedDataURL;
+          container.appendChild(maskedImg);
+
+          resultsSection.appendChild(container);
+
+          // Save the file name and dataURL for the ZIP download
+          const baseName = file.name.replace(/\.[^.]+$/, "");
+          maskedImages.push({
+            filename: baseName + "_masked.jpg",
+            dataURL: maskedDataURL,
+          });
+        }
+
+        progressBar.style.width = "100%";
+
+        // Create a single "Download All" button after processing is complete.
+        const downloadButton = document.createElement("button");
+        downloadButton.textContent = "Download All Masked Images (ZIP)";
+        downloadButton.className = "download-all-btn";
+        downloadButton.addEventListener("click", downloadZip);
+        downloadContainer.appendChild(downloadButton);
+      });
+
+      // Helper: apply alpha mask to a single render file -> returns JPG DataURL
+      function processMask(file) {
+        return new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            const renderImg = new Image();
+            renderImg.onload = function () {
+              // Create canvas for the render image
+              const renderCanvas = document.createElement("canvas");
+              renderCanvas.width = alphaWidth;
+              renderCanvas.height = alphaHeight;
+              const renderCtx = renderCanvas.getContext("2d");
+              renderCtx.drawImage(renderImg, 0, 0, alphaWidth, alphaHeight);
+
+              // Get the render pixel data
+              const renderImageData = renderCtx.getImageData(
+                0,
+                0,
+                alphaWidth,
+                alphaHeight
+              );
+              const rData = renderImageData.data;
+              const aData = alphaImageData.data; // alpha data
+
+              // For each pixel, if alpha is black (or near black), fill white
+              for (let i = 0; i < rData.length; i += 4) {
+                const r = aData[i];
+                const g = aData[i + 1];
+                const b = aData[i + 2];
+                if (r < 10 && g < 10 && b < 10) {
+                  rData[i] = 255; // R
+                  rData[i + 1] = 255; // G
+                  rData[i + 2] = 255; // B
+                  rData[i + 3] = 255; // A (opaque)
+                }
+              }
+
+              renderCtx.putImageData(renderImageData, 0, 0);
+              const dataURL = renderCanvas.toDataURL("image/jpeg", 1.0);
+              resolve(dataURL);
+            };
+            renderImg.src = e.target.result;
+          };
+          reader.readAsDataURL(file);
+        });
+      }
+
+      // Utility: Convert DataURL to Blob
+      function dataURLtoBlob(dataurl) {
+        var arr = dataurl.split(","),
+          mime = arr[0].match(/:(.*?);/)[1],
+          bstr = atob(arr[1]),
+          n = bstr.length,
+          u8arr = new Uint8Array(n);
+        while (n--) {
+          u8arr[n] = bstr.charCodeAt(n);
+        }
+        return new Blob([u8arr], { type: mime });
+      }
+
+      // Function to create a ZIP file and trigger download
+      function downloadZip() {
+        const zip = new JSZip();
+        maskedImages.forEach((item) => {
+          zip.file(item.filename, dataURLtoBlob(item.dataURL));
+        });
+        zip.generateAsync({ type: "blob" }).then(function (content) {
+          saveAs(content, "masked_images.zip");
+        });
+      }
+    </script>
+  </body>
+</html>
