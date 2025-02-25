@@ -374,7 +374,7 @@
           // Save the file name and dataURL for the ZIP download
           const baseName = file.name.replace(/\.[^.]+$/, "");
           maskedImages.push({
-            filename: baseName + "_masked.jpg",
+            filename: baseName + ".jpg",
             dataURL: maskedDataURL,
           });
         }
@@ -383,7 +383,7 @@
 
         // Create a single "Download All" button after processing is complete.
         const downloadButton = document.createElement("button");
-        downloadButton.textContent = "Download All Masked Images (ZIP)";
+        downloadButton.textContent = "Download All Images (ZIP)";
         downloadButton.className = "download-all-btn";
         downloadButton.addEventListener("click", downloadZip);
         downloadContainer.appendChild(downloadButton);
