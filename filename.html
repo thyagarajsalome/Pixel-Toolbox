@@ -313,7 +313,7 @@
           .map((file, index) => {
             const newName =
               index < MAX_FILES
-                ? `${(index + 1).toString().padStart(3, "0")}.jpg`
+                ? `${(index + 1).toString().padStart()}.jpg`
                 : "Not renamed (exceeded limit)";
             return `
               <div class="file-item">
@@ -329,7 +329,7 @@
         const zip = new JSZip();
         const filesCount = Math.min(files.length, MAX_FILES);
         for (let i = 0; i < filesCount; i++) {
-          const newName = `${(i + 1).toString().padStart(3, "0")}.jpg`;
+          const newName = `${(i + 1).toString().padStart()}.jpg`;
           const blob = await files[i].arrayBuffer();
           zip.file(newName, blob);
         }
