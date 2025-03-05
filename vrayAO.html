@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>V-Ray AO Blending (Multiply Only)</title>
+    <style>
+      /* ============ ADOPTED STYLES ============ */
+
+      /* Smooth Scrolling */
+      html {
+        scroll-behavior: smooth;
+      }
+      /* Reset & Body */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f8f9fa;
+        color: #333;
+        line-height: 1.6;
+      }
+      /* Navigation Bar */
+      nav {
+        background-color: #fff;
+        border-bottom: 1px solid #e0e0e0;
+        padding: 10px 20px;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+      .navbar-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+      }
+      .nav-logo {
+        display: flex;
+        align-items: center;
+        font-size: 1.5em;
+        font-weight: bold;
+        color: #333;
+      }
+      .nav-menu {
+        list-style: none;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      .nav-item {
+        margin-left: 20px;
+      }
+      .nav-item a {
+        text-decoration: none;
+        color: #333;
+        padding: 8px 12px;
+        display: block;
+      }
+      .nav-item a:hover {
+        background-color: #e9ecef;
+        border-radius: 4px;
+      }
+      .menu-toggle {
+        display: none;
+        background: none;
+        border: none;
+        font-size: 1.5em;
+        cursor: pointer;
+      }
+      @media (max-width: 768px) {
+        .menu-toggle {
+          display: block;
+        }
+        .nav-menu {
+          display: none;
+          width: 100%;
+          flex-direction: column;
+        }
+        .nav-menu.active {
+          display: flex;
+        }
+        .nav-item {
+          margin-left: 0;
+          width: 100%;
+          text-align: center;
+        }
+      }
+      /* Hero Section */
+      .hero {
+        text-align: center;
+        padding: 40px 20px;
+        background-color: #e9ecef;
+        margin-bottom: 30px;
+      }
+      .hero h1 {
+        font-size: 2.5em;
+        margin-bottom: 10px;
+      }
+      .hero p {
+        font-size: 1.1em;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+      /* Main Container */
+      .container {
+        max-width: 1200px;
+        margin: 0 auto 40px auto;
+        padding: 20px;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      /* Conversion Controls / Upload Section */
+      .conversion-controls {
+        margin: 20px 0;
+        padding: 15px;
+        border: 1px solid #eee;
+        border-radius: 8px;
+        background: #fafafa;
+      }
+      .conversion-controls h3 {
+        margin-bottom: 10px;
+      }
+      /* Progress Bar */
+      .progress-section {
+        margin: 20px 0;
+      }
+      .progress-bar {
+        height: 5px;
+        width: 100%;
+        background-color: #e0e0e0;
+        border-radius: 2px;
+        margin-top: 5px;
+      }
+      .progress {
+        height: 100%;
+        background-color: #007bff;
+        border-radius: 2px;
+        width: 0%;
+        transition: width 0.3s ease;
+      }
+      /* Preview Section */
+      .preview-section {
+        margin: 20px 0;
+        text-align: center;
+      }
+      .preview-section canvas {
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        max-width: 100%;
+        height: auto;
+      }
+      /* Results */
+      .results-section {
+        margin: 20px 0;
+      }
+      .blended-image {
+        display: inline-block;
+        margin: 10px;
+        text-align: center;
+      }
+      .blended-image img {
+        max-width: 200px;
+        display: block;
+        margin-bottom: 5px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      /* Download All Button */
+      .download-all-btn {
+        background: #28a745;
+        color: #fff;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-top: 20px;
+        font-size: 1em;
+      }
+      .download-all-btn:hover {
+        background: #218838;
+      }
+      /* Buttons */
+      button {
+        background: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-right: 10px;
+      }
+      button:hover:not(:disabled) {
+        background: #0056b3;
+      }
+      button:disabled {
+        background: #cccccc;
+        cursor: not-allowed;
+      }
+      /* Range */
+      .range-container {
+        display: flex;
+        align-items: center;
+        margin-top: 10px;
+      }
+      .range-container label {
+        margin-right: 10px;
+      }
+      .range-container input[type="range"] {
+        margin: 0 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ========== NAVIGATION BAR ========== -->
+    <nav>
+      <div class="navbar-container">
+        <div class="nav-logo">V-Ray AO Blending</div>
+        <button class="menu-toggle" id="menuToggle">☰</button>
+        <ul class="nav-menu" id="navMenu">
+          <li class="nav-item"><a href="#hero">Home</a></li>
+          <li class="nav-item"><a href="#howToUse">How to Use</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- ========== HERO SECTION ========== -->
+    <section class="hero" id="hero">
+      <h1>V-Ray AO Blending Tool</h1>
+      <p>
+        Blend a V-Ray AO pass with up to 500 main images using the Multiply
+        mode. Adjust the opacity and download your final images in one click.
+      </p>
+    </section>
+
+    <!-- ========== MAIN CONTENT ========== -->
+    <div class="container" id="howToUse">
+      <h2>How to Use This Web App</h2>
+      <p>
+        1. Upload your V-Ray AO image (JPG or PNG).<br />
+        2. Upload one or more main images (up to 500).<br />
+        3. The tool will only use the Multiply blending mode.<br />
+        4. Adjust the opacity as desired and preview the first image result.<br />
+        5. Click "Blend Images" to process all main images.<br />
+        6. Download all results as a ZIP file containing JPG/PNG files with the
+        same filenames as originally uploaded.
+      </p>
+
+      <!-- Conversion Controls / Upload Section -->
+      <div class="conversion-controls">
+        <h3>1) Upload Your Images</h3>
+        <label for="aoUpload"><strong>V-Ray AO Image:</strong></label>
+        <input type="file" id="aoUpload" accept="image/jpeg, image/png" />
+
+        <br /><br />
+        <label for="mainUpload"><strong>Main JPG(s)/PNG(s):</strong></label>
+        <input
+          type="file"
+          id="mainUpload"
+          accept="image/jpeg, image/png"
+          multiple
+        />
+
+        <br /><br />
+        <div class="range-container">
+          <label for="opacityRange"><strong>Opacity (Multiply):</strong></label>
+          <input type="range" id="opacityRange" min="0" max="100" value="100" />
+          <span id="opacityValue">100%</span>
+        </div>
+
+        <br />
+        <button id="blendButton" disabled>2) Blend Images</button>
+      </div>
+
+      <!-- Preview Section -->
+      <div class="preview-section">
+        <h3>Live Preview (First Main Image)</h3>
+        <canvas id="previewCanvas" width="600" height="400"></canvas>
+      </div>
+
+      <!-- Progress Section -->
+      <div class="progress-section">
+        <label><strong>Progress</strong></label>
+        <div class="progress-bar">
+          <div class="progress" id="progress"></div>
+        </div>
+      </div>
+
+      <!-- Results Section -->
+      <div class="results-section" id="resultsSection">
+        <!-- Blended images will appear here -->
+      </div>
+
+      <!-- Container for Download All button -->
+      <div id="downloadContainer"></div>
+    </div>
+
+    <!-- ========== JSZip and FileSaver Libraries ========== -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.0/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+
+    <script>
+      // ======== NAV TOGGLE FOR SMALL SCREENS ========
+      const menuToggle = document.getElementById("menuToggle");
+      const navMenu = document.getElementById("navMenu");
+      menuToggle.addEventListener("click", () => {
+        navMenu.classList.toggle("active");
+      });
+
+      // ======== BLENDING FUNCTIONALITY ========
+      const aoUpload = document.getElementById("aoUpload");
+      const mainUpload = document.getElementById("mainUpload");
+      const opacityRange = document.getElementById("opacityRange");
+      const opacityValue = document.getElementById("opacityValue");
+      const blendButton = document.getElementById("blendButton");
+      const previewCanvas = document.getElementById("previewCanvas");
+      const progressBar = document.getElementById("progress");
+      const resultsSection = document.getElementById("resultsSection");
+      const downloadContainer = document.getElementById("downloadContainer");
+
+      let aoImage = null;
+      let aoLoaded = false;
+      let mainFiles = [];
+
+      // Store final results for ZIP
+      let blendedImages = [];
+
+      // Context for preview
+      const previewCtx = previewCanvas.getContext("2d");
+
+      // Update the label next to opacity range
+      opacityRange.addEventListener("input", () => {
+        opacityValue.textContent = opacityRange.value + "%";
+        updatePreview();
+      });
+
+      // 1) Load AO image
+      aoUpload.addEventListener("change", function () {
+        if (!aoUpload.files || aoUpload.files.length === 0) {
+          aoLoaded = false;
+          blendButton.disabled = true;
+          return;
+        }
+        const file = aoUpload.files[0];
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          const img = new Image();
+          img.onload = function () {
+            aoImage = img;
+            aoLoaded = true;
+            // Enable blend button if we also have main images
+            if (mainFiles.length > 0) {
+              blendButton.disabled = false;
+            }
+            // Try updating preview
+            updatePreview();
+          };
+          img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
+
+      // 2) Load main images
+      mainUpload.addEventListener("change", function () {
+        if (mainUpload.files && mainUpload.files.length > 0) {
+          mainFiles = Array.from(mainUpload.files);
+        } else {
+          mainFiles = [];
+        }
+        // Enable blend button if AO is also loaded
+        blendButton.disabled = !(aoLoaded && mainFiles.length > 0);
+        // Try updating preview
+        updatePreview();
+      });
+
+      // 3) Blend images on button click
+      blendButton.addEventListener("click", async function () {
+        if (!aoLoaded || mainFiles.length === 0) return;
+
+        // Clear previous results
+        resultsSection.innerHTML = "";
+        downloadContainer.innerHTML = "";
+        progressBar.style.width = "0%";
+        blendedImages = [];
+
+        const total = mainFiles.length;
+        let completed = 0;
+
+        // Multiply is the only mode, read opacity from slider
+        const blendOpacity = parseFloat(opacityRange.value) / 100;
+
+        for (const file of mainFiles) {
+          const dataURL = await blendTwoImages(file, aoImage, blendOpacity);
+          completed++;
+          const percent = (completed / total) * 100;
+          progressBar.style.width = percent + "%";
+
+          // Show blended image
+          const container = document.createElement("div");
+          container.className = "blended-image";
+
+          const blendedImg = document.createElement("img");
+          blendedImg.src = dataURL;
+          container.appendChild(blendedImg);
+          resultsSection.appendChild(container);
+
+          // Keep the same filename and extension
+          blendedImages.push({
+            filename: file.name, // EXACT same name as uploaded
+            dataURL: dataURL,
+          });
+        }
+
+        // Create a "Download All" button after processing is complete
+        if (blendedImages.length > 0) {
+          const downloadButton = document.createElement("button");
+          downloadButton.textContent = "Download All Blended Images (ZIP)";
+          downloadButton.className = "download-all-btn";
+          downloadButton.addEventListener("click", downloadZip);
+          downloadContainer.appendChild(downloadButton);
+        }
+      });
+
+      // ========== PREVIEW FUNCTION ==========
+      // This function blends the AO with the FIRST main image and draws it to previewCanvas
+      async function updatePreview() {
+        // Need an AO image and at least one main image
+        if (!aoImage || mainFiles.length === 0) {
+          // Clear the preview if we have no images
+          previewCtx.clearRect(0, 0, previewCanvas.width, previewCanvas.height);
+          return;
+        }
+
+        const blendOpacity = parseFloat(opacityRange.value) / 100;
+        const file = mainFiles[0];
+
+        // We'll create an offscreen canvas for blending, then draw the result in the preview
+        const dataURL = await blendTwoImages(file, aoImage, blendOpacity);
+
+        // Draw that dataURL into the previewCanvas
+        const previewImg = new Image();
+        previewImg.onload = function () {
+          // Scale the preview if needed
+          previewCtx.clearRect(0, 0, previewCanvas.width, previewCanvas.height);
+          previewCtx.drawImage(
+            previewImg,
+            0,
+            0,
+            previewCanvas.width,
+            previewCanvas.height
+          );
+        };
+        previewImg.src = dataURL;
+      }
+
+      // ========== CORE BLENDING FUNCTION ==========
+      // Hard-coded to multiply mode
+      function blendTwoImages(mainFile, aoImg, blendOpacity) {
+        return new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            const mainImg = new Image();
+            mainImg.onload = function () {
+              // We'll assume both images match in size, or you can adjust to a fixed size
+              const width = mainImg.width;
+              const height = mainImg.height;
+
+              const canvas = document.createElement("canvas");
+              canvas.width = width;
+              canvas.height = height;
+              const ctx = canvas.getContext("2d");
+
+              // 1) Draw the main image
+              ctx.drawImage(mainImg, 0, 0, width, height);
+
+              // 2) Set blending mode & opacity
+              ctx.globalCompositeOperation = "multiply";
+              ctx.globalAlpha = blendOpacity;
+
+              // 3) Draw AO image
+              ctx.drawImage(aoImg, 0, 0, width, height);
+
+              // 4) Reset composite
+              ctx.globalCompositeOperation = "source-over";
+              ctx.globalAlpha = 1.0;
+
+              // Decide output format based on original file extension
+              const extension = mainFile.name.split(".").pop().toLowerCase();
+              let dataURLType = "image/jpeg";
+              if (extension === "png") {
+                dataURLType = "image/png";
+              }
+              const dataURL = canvas.toDataURL(dataURLType, 1.0);
+
+              resolve(dataURL);
+            };
+            mainImg.src = e.target.result;
+          };
+          reader.readAsDataURL(mainFile);
+        });
+      }
+
+      // ========== ZIP DOWNLOAD ==========
+      function dataURLtoBlob(dataurl) {
+        const arr = dataurl.split(",");
+        const mime = arr[0].match(/:(.*?);/)[1];
+        const bstr = atob(arr[1]);
+        let n = bstr.length;
+        const u8arr = new Uint8Array(n);
+        while (n--) {
+          u8arr[n] = bstr.charCodeAt(n);
+        }
+        return new Blob([u8arr], { type: mime });
+      }
+
+      function downloadZip() {
+        const zip = new JSZip();
+        blendedImages.forEach((item) => {
+          zip.file(item.filename, dataURLtoBlob(item.dataURL));
+        });
+        zip.generateAsync({ type: "blob" }).then(function (content) {
+          saveAs(content, "blended_images.zip");
+        });
+      }
+    </script>
+  </body>
+</html>
