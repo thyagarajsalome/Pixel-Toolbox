@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PixelToolbox - Converter (Image ↔ PDF)</title>
+    <!-- SEO & Social Meta Tags -->
+    <meta
+      name="description"
+      content="PixelToolbox Converter: Convert images to PDF and PDF files to image formats quickly and effortlessly. Enjoy a fast, free, and user-friendly tool."
+    />
+    <meta
+      name="keywords"
+      content="PixelToolbox, converter, image to pdf, pdf to image, online tools, conversion"
+    />
+    <meta name="author" content="Your Name or Company" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://example.com/converter" />
+    <meta
+      property="og:title"
+      content="PixelToolbox - Converter (Image ↔ PDF)"
+    />
+    <meta
+      property="og:description"
+      content="Convert images to PDF and vice versa effortlessly with PixelToolbox."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://example.com/converter" />
+    <meta property="og:image" content="https://example.com/og-image.jpg" />
+    <!-- Inline CSS for Fast Loading and Consistent GUI -->
+    <style>
+      /* Smooth Scrolling */
+      html {
+        scroll-behavior: smooth;
+      }
+      /* Reset & Body */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f8f9fa;
+        color: #333;
+        line-height: 1.6;
+      }
+      /* Navigation Bar */
+      nav {
+        background-color: #fff;
+        border-bottom: 1px solid #e0e0e0;
+        padding: 10px 20px;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+      .navbar-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+      }
+      .nav-logo {
+        display: flex;
+        align-items: center;
+        font-size: 1.5em;
+        font-weight: bold;
+        color: #333;
+      }
+      .nav-logo svg {
+        margin-right: 8px;
+      }
+      .nav-menu {
+        list-style: none;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      .nav-item {
+        margin-left: 20px;
+      }
+      .nav-item a {
+        text-decoration: none;
+        color: #333;
+        padding: 8px 12px;
+        display: block;
+      }
+      .nav-item a:hover {
+        background-color: #e9ecef;
+        border-radius: 4px;
+      }
+      .menu-toggle {
+        display: none;
+        background: none;
+        border: none;
+        font-size: 1.5em;
+        cursor: pointer;
+      }
+      @media (max-width: 768px) {
+        .menu-toggle {
+          display: block;
+        }
+        .nav-menu {
+          display: none;
+          width: 100%;
+          flex-direction: column;
+        }
+        .nav-menu.active {
+          display: flex;
+        }
+        .nav-item {
+          margin-left: 0;
+          width: 100%;
+          text-align: center;
+        }
+      }
+      /* Hero Section */
+      .hero {
+        text-align: center;
+        padding: 40px 20px;
+        background-color: #e9ecef;
+        margin-bottom: 30px;
+      }
+      .hero h1 {
+        font-size: 2.5em;
+        margin-bottom: 10px;
+      }
+      .hero p {
+        font-size: 1.1em;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+      /* Main Container */
+      .container {
+        max-width: 1200px;
+        margin: 0 auto 40px auto;
+        padding: 20px;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      /* Conversion Controls */
+      .conversion-controls {
+        margin: 20px 0;
+        padding: 15px;
+        border: 1px solid #eee;
+        border-radius: 8px;
+        background: #fafafa;
+      }
+      .conversion-controls h3 {
+        margin-bottom: 10px;
+      }
+      select {
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      /* Drag & Drop Area */
+      .drag-area {
+        border: 2px dashed #ccc;
+        padding: 20px;
+        text-align: center;
+        margin-bottom: 20px;
+        height: 150px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        border-radius: 8px;
+        background: #fdfdfd;
+      }
+      .drag-area.active {
+        border-color: #007bff;
+        background: #e7f0fd;
+      }
+      /* File List */
+      .file-list {
+        margin: 20px 0;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        max-height: 300px;
+        overflow-y: auto;
+      }
+      .file-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        border-bottom: 1px solid #eee;
+      }
+      .file-item:last-child {
+        border-bottom: none;
+      }
+      .info {
+        display: flex;
+        align-items: center;
+      }
+      .thumbnail {
+        width: 60px;
+        height: 60px;
+        object-fit: cover;
+        margin-right: 15px;
+        border-radius: 4px;
+      }
+      .file-name {
+        font-weight: bold;
+      }
+      .size {
+        color: #666;
+        font-size: 0.9em;
+      }
+      .conversion-results {
+        display: flex;
+        align-items: center;
+      }
+      .percentage {
+        color: #007bff;
+        font-weight: bold;
+        margin-right: 10px;
+      }
+      /* Buttons */
+      button {
+        background: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-right: 10px;
+      }
+      button:hover:not(:disabled) {
+        background: #0056b3;
+      }
+      button:disabled {
+        background: #cccccc;
+        cursor: not-allowed;
+      }
+      /* Progress Bar */
+      .progress-bar {
+        height: 5px;
+        width: 100%;
+        background-color: #e0e0e0;
+        border-radius: 2px;
+        margin-top: 5px;
+      }
+      .progress {
+        height: 100%;
+        background-color: #007bff;
+        border-radius: 2px;
+        width: 0%;
+        transition: width 0.3s ease;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navigation Bar -->
+    <nav>
+      <div class="navbar-container">
+        <div class="nav-logo">
+          <!-- Custom SVG Logo for PixelToolbox -->
+          <svg
+            width="30"
+            height="30"
+            viewBox="0 0 30 30"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <rect
+              x="2"
+              y="2"
+              width="26"
+              height="26"
+              stroke="#333"
+              stroke-width="2"
+              fill="none"
+            />
+            <text x="15" y="21" font-size="12" text-anchor="middle" fill="#333">
+              PT
+            </text>
+          </svg>
+          PixelToolbox
+        </div>
+        <button class="menu-toggle" id="menuToggle">
+          <span class="hamburger">&#9776;</span>
+          <span class="close-icon" style="display: none">&times;</span>
+        </button>
+        <ul class="nav-menu">
+          <li class="nav-item"><a href="index.html">Home</a></li>
+          <li class="nav-item"><a href="about.html">About</a></li>
+          <li class="nav-item"><a href="tools.html">Tools</a></li>
+          <li class="nav-item"><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero">
+      <h1>Converter: Image ↔ PDF</h1>
+      <p>Convert your images to PDF and your PDFs to images effortlessly.</p>
+    </div>
+
+    <!-- Main Content Container -->
+    <div class="container">
+      <!-- Conversion Type Controls -->
+      <div class="conversion-controls">
+        <h3>Conversion Type</h3>
+        <select id="conversionType">
+          <option value="img-to-pdf">Image to PDF</option>
+          <option value="pdf-to-img">PDF to Image</option>
+        </select>
+      </div>
+
+      <!-- Drag & Drop Area -->
+      <div class="drag-area" id="dropZone">
+        <div>Drop files here or click to select</div>
+        <input type="file" id="fileInput" multiple style="display: none" />
+      </div>
+
+      <!-- File List -->
+      <div class="file-list" id="fileList"></div>
+
+      <!-- Action Buttons -->
+      <div>
+        <button id="convertBtn" disabled>Convert Files</button>
+        <button id="downloadBtn" disabled>Download All</button>
+      </div>
+    </div>
+
+    <!-- External Libraries -->
+    <!-- jsPDF for image to PDF conversion -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <!-- pdf.js for PDF to image conversion -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.14.305/pdf.min.js"></script>
+    <!-- JSZip for creating ZIP files -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
+
+    <!-- Main JavaScript -->
+    <script>
+      // Elements
+      const dropZone = document.getElementById("dropZone");
+      const fileInput = document.getElementById("fileInput");
+      const fileListContainer = document.getElementById("fileList");
+      const conversionTypeSelect = document.getElementById("conversionType");
+      const convertBtn = document.getElementById("convertBtn");
+      const downloadBtn = document.getElementById("downloadBtn");
+
+      // Variables
+      let files = [];
+      let convertedFiles = [];
+
+      // Update file input accept attribute based on conversion type
+      function updateConversionSettings() {
+        const conversionType = conversionTypeSelect.value;
+        if (conversionType === "img-to-pdf") {
+          // Accept common image files
+          fileInput.accept = ".jpg,.jpeg,.png";
+        } else if (conversionType === "pdf-to-img") {
+          fileInput.accept = ".pdf";
+        }
+        // Clear previously selected files
+        files = [];
+        convertedFiles = [];
+        fileListContainer.innerHTML = "";
+        convertBtn.disabled = true;
+        downloadBtn.disabled = true;
+      }
+
+      updateConversionSettings();
+
+      // Event Listeners for file selection and drag/drop
+      dropZone.addEventListener("click", () => fileInput.click());
+      dropZone.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        dropZone.classList.add("active");
+      });
+      dropZone.addEventListener("dragleave", () =>
+        dropZone.classList.remove("active")
+      );
+      dropZone.addEventListener("drop", handleFiles);
+      fileInput.addEventListener("change", handleFiles);
+      conversionTypeSelect.addEventListener("change", updateConversionSettings);
+
+      convertBtn.addEventListener("click", convertFiles);
+      downloadBtn.addEventListener("click", downloadAllFiles);
+
+      // Handle file selection
+      function handleFiles(e) {
+        e.preventDefault();
+        dropZone.classList.remove("active");
+        const selectedFiles = e.target.files || e.dataTransfer.files;
+        const conversionType = conversionTypeSelect.value;
+        files = Array.from(selectedFiles).filter((file) => {
+          if (conversionType === "img-to-pdf") {
+            return file.type.startsWith("image/");
+          } else if (conversionType === "pdf-to-img") {
+            return (
+              file.type === "application/pdf" ||
+              file.name.toLowerCase().endsWith(".pdf")
+            );
+          }
+        });
+        if (files.length > 0) {
+          displayFiles();
+          convertBtn.disabled = false;
+        } else {
+          alert("Please select appropriate files for the chosen conversion.");
+        }
+      }
+
+      // Display file list and info
+      function displayFiles() {
+        fileListContainer.innerHTML = "";
+        convertedFiles = [];
+        files.forEach((file, index) => {
+          const fileItem = document.createElement("div");
+          fileItem.className = "file-item";
+          fileItem.id = `file-${index}`;
+
+          const info = document.createElement("div");
+          info.className = "info";
+
+          // Create thumbnail preview
+          const thumbnail = document.createElement("img");
+          thumbnail.className = "thumbnail";
+          if (conversionTypeSelect.value === "img-to-pdf") {
+            // For images, use FileReader to preview
+            const reader = new FileReader();
+            reader.onload = function (e) {
+              thumbnail.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+          } else {
+            // For PDFs show a default PDF icon (replace with your own if needed)
+            thumbnail.src = "https://via.placeholder.com/60?text=PDF";
+          }
+          info.appendChild(thumbnail);
+
+          const details = document.createElement("div");
+          const fileName = document.createElement("div");
+          fileName.className = "file-name";
+          fileName.textContent = file.name;
+          details.appendChild(fileName);
+          const fileSize = document.createElement("div");
+          fileSize.className = "size";
+          fileSize.textContent = formatSize(file.size);
+          details.appendChild(fileSize);
+          info.appendChild(details);
+          fileItem.appendChild(info);
+
+          // Conversion results container
+          const conversionResults = document.createElement("div");
+          conversionResults.className = "conversion-results";
+          conversionResults.id = `results-${index}`;
+          fileItem.appendChild(conversionResults);
+
+          // Progress bar
+          const progressBar = document.createElement("div");
+          progressBar.className = "progress-bar";
+          progressBar.innerHTML =
+            '<div class="progress" id="progress-' + index + '"></div>';
+          fileItem.appendChild(progressBar);
+
+          fileListContainer.appendChild(fileItem);
+        });
+      }
+
+      function formatSize(bytes) {
+        if (bytes < 1024) return bytes + " B";
+        else if (bytes < 1048576) return (bytes / 1024).toFixed(2) + " KB";
+        else return (bytes / 1048576).toFixed(2) + " MB";
+      }
+
+      // Main conversion handler for both conversion types
+      async function convertFiles() {
+        if (files.length === 0) return;
+        convertBtn.disabled = true;
+        convertedFiles = [];
+        const conversionType = conversionTypeSelect.value;
+
+        for (let i = 0; i < files.length; i++) {
+          const file = files[i];
+          const progressElement = document.getElementById(`progress-${i}`);
+          const resultsElement = document.getElementById(`results-${i}`);
+          try {
+            progressElement.style.width = "30%";
+            let converted;
+            if (conversionType === "img-to-pdf") {
+              converted = await convertImageToPDF(file);
+            } else if (conversionType === "pdf-to-img") {
+              converted = await convertPDFToImage(file);
+            }
+            convertedFiles.push(converted);
+            // For demonstration, show a dummy 100% change message
+            resultsElement.innerHTML = `<span class="percentage">Done</span>
+              <span class="size">${formatSize(file.size)} → ${formatSize(
+              converted.size
+            )}</span>`;
+            progressElement.style.width = "100%";
+          } catch (error) {
+            console.error("Error converting file:", error);
+            resultsElement.innerHTML =
+              '<span style="color: red;">Error converting file</span>';
+            progressElement.style.width = "100%";
+            progressElement.style.backgroundColor = "#ff6b6b";
+          }
+        }
+        downloadBtn.disabled = false;
+      }
+
+      // Convert an image file to a single-page PDF using jsPDF
+      async function convertImageToPDF(file) {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.readAsDataURL(file);
+          reader.onload = function (event) {
+            const img = new Image();
+            img.src = event.target.result;
+            img.onload = function () {
+              // Create a new PDF instance
+              const { jsPDF } = window.jspdf;
+              // Set page size to match the image dimensions (or use a fixed size)
+              const pdf = new jsPDF({
+                orientation: img.width > img.height ? "landscape" : "portrait",
+                unit: "pt",
+                format: [img.width, img.height],
+              });
+              // Add the image to the PDF
+              pdf.addImage(img, "JPEG", 0, 0, img.width, img.height);
+              // Output as blob
+              const pdfBlob = pdf.output("blob");
+              // Rename file (replace extension)
+              const newName = file.name.replace(/\.[^.]+$/, ".pdf");
+              const convertedFile = new File([pdfBlob], newName, {
+                type: "application/pdf",
+                lastModified: Date.now(),
+              });
+              resolve(convertedFile);
+            };
+            img.onerror = function () {
+              reject(new Error("Failed to load image"));
+            };
+          };
+          reader.onerror = function () {
+            reject(new Error("Failed to read file"));
+          };
+        });
+      }
+
+      // Convert a PDF file to an image by rendering the first page using pdf.js
+      async function convertPDFToImage(file) {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.readAsArrayBuffer(file);
+          reader.onload = async function (e) {
+            try {
+              const typedarray = new Uint8Array(e.target.result);
+              const pdf = await pdfjsLib.getDocument(typedarray).promise;
+              // For simplicity, only render the first page
+              const page = await pdf.getPage(1);
+              const viewport = page.getViewport({ scale: 1.5 });
+              const canvas = document.createElement("canvas");
+              canvas.width = viewport.width;
+              canvas.height = viewport.height;
+              const context = canvas.getContext("2d");
+              const renderContext = {
+                canvasContext: context,
+                viewport: viewport,
+              };
+              await page.render(renderContext).promise;
+              // Convert canvas to image blob
+              canvas.toBlob((blob) => {
+                const newName = file.name.replace(/\.[^.]+$/, ".png");
+                const convertedFile = new File([blob], newName, {
+                  type: "image/png",
+                  lastModified: Date.now(),
+                });
+                resolve(convertedFile);
+              });
+            } catch (err) {
+              reject(err);
+            }
+          };
+          reader.onerror = function () {
+            reject(new Error("Failed to read PDF"));
+          };
+        });
+      }
+
+      // Download all converted files as a ZIP archive
+      async function downloadAllFiles() {
+        if (!convertedFiles.length) return;
+        const zip = new JSZip();
+        const folder = zip.folder("converted_files");
+        convertedFiles.forEach((file) => {
+          folder.file(file.name, file);
+        });
+        const content = await zip.generateAsync({ type: "blob" });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(content);
+        link.download = "converted_files.zip";
+        link.click();
+      }
+
+      // Mobile menu toggle
+      document
+        .getElementById("menuToggle")
+        .addEventListener("click", function () {
+          const navMenu = document.querySelector(".nav-menu");
+          navMenu.classList.toggle("active");
+          const hamburger = this.querySelector(".hamburger");
+          const closeIcon = this.querySelector(".close-icon");
+          if (navMenu.classList.contains("active")) {
+            hamburger.style.display = "none";
+            closeIcon.style.display = "inline";
+          } else {
+            hamburger.style.display = "inline";
+            closeIcon.style.display = "none";
+          }
+        });
+    </script>
+  </body>
+</html>

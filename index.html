@@ -299,7 +299,8 @@
           <li class="nav-item dropdown" id="toolsDropdown">
             <a href="javascript:void(0)">Tools &#9662;</a>
             <div class="dropdown-content" id="dropdownContent">
-              <a href="./convertor.html" target="_blank">Convertor</a>
+              <a href="./pdf-image.html" target="_blank">pdf Convertor</a>
+              <a href="./convertor.html" target="_blank">image Convertor</a>
               <a href="./filename.html" target="_blank">File Rename</a>
               <a href="./imageCompressor.html" target="_blank">Compressor</a>
               <a href="./csvdata.html" target="_blank">CSV Convertor</a>
@@ -445,7 +446,14 @@
     <script>
       const tools = [
         {
-          title: "Convertor",
+          title: "pdf convertor",
+          description:
+            "Effortlessly convert between pdf and image & image to pdf formats.",
+          href: "./pdf-image.html",
+          tags: ["Conversion", "Image Processing"],
+        },
+        {
+          title: "Image Convertor",
           description: "Effortlessly convert between JPG and PNG formats.",
           href: "./convertor.html",
           tags: ["Conversion", "Image Processing"],
@@ -458,7 +466,7 @@
           tags: ["Utilities", "Productivity"],
         },
         {
-          title: "Compressor",
+          title: "Image Compressor",
           description:
             "Compress your files to optimize storage and speed up uploads.",
           href: "./imageCompressor.html",
