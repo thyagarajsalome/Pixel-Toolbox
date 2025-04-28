@@ -3,30 +3,33 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PixelToolbox - Converter (Image ↔ PDF)</title>
+    <title>Convert PDF to JPG</title>
     <!-- SEO & Social Meta Tags -->
     <meta
       name="description"
-      content="PixelToolbox Converter: Convert images to PDF and PDF files to image formats quickly and effortlessly. Enjoy a fast, free, and user-friendly tool."
+      content="Convert your PDF files to high-quality JPG images effortlessly at convertpdftojpg.in. Enjoy fast, free, and user-friendly conversion with our online tool."
     />
     <meta
       name="keywords"
-      content="PixelToolbox, converter, image to pdf, pdf to image, online tools, conversion"
+      content="convert pdf to jpg, pdf converter, online pdf conversion, free converter, convertpdftojpg.in"
     />
     <meta name="author" content="Your Name or Company" />
     <meta name="robots" content="index, follow" />
-    <link rel="canonical" href="https://example.com/converter" />
+    <link rel="canonical" href="https://convertpdftojpg.in/" />
     <meta
       property="og:title"
-      content="PixelToolbox - Converter (Image ↔ PDF)"
+      content="Convert PDF to JPG - Fast & Free Online Converter | convertpdftojpg.in"
     />
     <meta
       property="og:description"
-      content="Convert images to PDF and vice versa effortlessly with PixelToolbox."
+      content="Easily convert your PDF files into high-quality JPG images using convertpdftojpg.in – an efficient, free, and secure online converter."
     />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://example.com/converter" />
-    <meta property="og:image" content="https://example.com/og-image.jpg" />
+    <meta property="og:url" content="https://convertpdftojpg.in/" />
+    <meta
+      property="og:image"
+      content="https://convertpdftojpg.in/og-image.jpg"
+    />
     <!-- Inline CSS for Fast Loading and Consistent GUI -->
     <style>
       /* Smooth Scrolling */
@@ -45,77 +48,6 @@
         color: #333;
         line-height: 1.6;
       }
-      /* Navigation Bar */
-      nav {
-        background-color: #fff;
-        border-bottom: 1px solid #e0e0e0;
-        padding: 10px 20px;
-        position: sticky;
-        top: 0;
-        z-index: 100;
-      }
-      .navbar-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        flex-wrap: wrap;
-      }
-      .nav-logo {
-        display: flex;
-        align-items: center;
-        font-size: 1.5em;
-        font-weight: bold;
-        color: #333;
-      }
-      .nav-logo svg {
-        margin-right: 8px;
-      }
-      .nav-menu {
-        list-style: none;
-        display: flex;
-        align-items: center;
-        flex-wrap: wrap;
-      }
-      .nav-item {
-        margin-left: 20px;
-      }
-      .nav-item a {
-        text-decoration: none;
-        color: #333;
-        padding: 8px 12px;
-        display: block;
-      }
-      .nav-item a:hover {
-        background-color: #e9ecef;
-        border-radius: 4px;
-      }
-      .menu-toggle {
-        display: none;
-        background: none;
-        border: none;
-        font-size: 1.5em;
-        cursor: pointer;
-      }
-      @media (max-width: 768px) {
-        .menu-toggle {
-          display: block;
-        }
-        .nav-menu {
-          display: none;
-          width: 100%;
-          flex-direction: column;
-        }
-        .nav-menu.active {
-          display: flex;
-        }
-        .nav-item {
-          margin-left: 0;
-          width: 100%;
-          text-align: center;
-        }
-      }
       /* Hero Section */
       .hero {
         text-align: center;
@@ -131,6 +63,27 @@
         font-size: 1.1em;
         max-width: 600px;
         margin: 0 auto;
+      }
+      /* Info Sections */
+      .info-section {
+        max-width: 1200px;
+        margin: 0 auto 30px auto;
+        padding: 20px;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      .info-section h2 {
+        font-size: 2em;
+        margin-bottom: 10px;
+        text-align: center;
+      }
+      .info-section ul {
+        list-style-type: disc;
+        margin-left: 20px;
+      }
+      .info-section p {
+        margin-bottom: 15px;
       }
       /* Main Container */
       .container {
@@ -256,59 +209,19 @@
     </style>
   </head>
   <body>
-    <!-- Navigation Bar -->
-    <nav>
-      <div class="navbar-container">
-        <div class="nav-logo">
-          <!-- Custom SVG Logo for PixelToolbox -->
-          <svg
-            width="30"
-            height="30"
-            viewBox="0 0 30 30"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <rect
-              x="2"
-              y="2"
-              width="26"
-              height="26"
-              stroke="#333"
-              stroke-width="2"
-              fill="none"
-            />
-            <text x="15" y="21" font-size="12" text-anchor="middle" fill="#333">
-              PT
-            </text>
-          </svg>
-          PixelToolbox
-        </div>
-        <button class="menu-toggle" id="menuToggle">
-          <span class="hamburger">&#9776;</span>
-          <span class="close-icon" style="display: none">&times;</span>
-        </button>
-        <ul class="nav-menu">
-          <li class="nav-item"><a href="index.html">Home</a></li>
-          <li class="nav-item"><a href="about.html">About</a></li>
-          <li class="nav-item"><a href="tools.html">Tools</a></li>
-          <li class="nav-item"><a href="contact.html">Contact</a></li>
-        </ul>
-      </div>
-    </nav>
-
     <!-- Hero Section -->
     <div class="hero">
-      <h1>Converter: Image ↔ PDF</h1>
-      <p>Convert your images to PDF and your PDFs to images effortlessly.</p>
+      <h1>Converter PDF to JPG</h1>
+      <p>Convert your PDF files to JPG images (and vice versa) effortlessly.</p>
     </div>
-
-    <!-- Main Content Container -->
+    <!-- Main Content Container for the Converter -->
     <div class="container">
       <!-- Conversion Type Controls -->
       <div class="conversion-controls">
         <h3>Conversion Type</h3>
         <select id="conversionType">
-          <option value="img-to-pdf">Image to PDF</option>
-          <option value="pdf-to-img">PDF to Image</option>
+          <option value="pdf-to-img">PDF to JPG</option>
+          <option value="img-to-pdf">JPG (Image) to PDF</option>
         </select>
       </div>
 
@@ -323,9 +236,60 @@
 
       <!-- Action Buttons -->
       <div>
-        <button id="convertBtn" disabled>Convert Files</button>
-        <button id="downloadBtn" disabled>Download All</button>
+        <button id="convertBtn" disabled>Convert</button>
+        <button id="downloadBtn" disabled>Download</button>
       </div>
+    </div>
+
+    <!-- Benefits Section -->
+    <div class="info-section">
+      <h2>Benefits of Using Our Converter</h2>
+      <ul>
+        <li>
+          <strong>Fast Conversion:</strong> Experience quick PDF to JPG
+          conversion without delays.
+        </li>
+        <li>
+          <strong>Free & Easy:</strong> Enjoy an entirely free service with a
+          user-friendly interface.
+        </li>
+        <li>
+          <strong>Secure & Private:</strong> Your files are processed in your
+          browser; no data is stored.
+        </li>
+        <li>
+          <strong>High-Quality Results:</strong> Get crisp, clear JPG images
+          suitable for all your needs.
+        </li>
+        <li>
+          <strong>No Installation Required:</strong> Use the tool directly from
+          your web browser.
+        </li>
+      </ul>
+    </div>
+
+    <!-- How to Use Section -->
+    <div class="info-section">
+      <h2>How to Use This Page</h2>
+      <p>Follow these simple steps to convert your files:</p>
+      <ul>
+        <li>
+          <strong>Select a Conversion Type:</strong> Use the drop-down menu to
+          choose between PDF to JPG or JPG to PDF.
+        </li>
+        <li>
+          <strong>Upload Your Files:</strong> Drag and drop your files into the
+          designated area or click to select them.
+        </li>
+        <li>
+          <strong>Convert:</strong> Click the "Convert Files" button. The tool
+          will process your file(s) and display progress.
+        </li>
+        <li>
+          <strong>Download:</strong> Once conversion is complete, download your
+          file(s) individually or as a ZIP archive.
+        </li>
+      </ul>
     </div>
 
     <!-- External Libraries -->
@@ -354,7 +318,7 @@
       function updateConversionSettings() {
         const conversionType = conversionTypeSelect.value;
         if (conversionType === "img-to-pdf") {
-          // Accept common image files
+          // Accept common image files (JPG, JPEG, PNG)
           fileInput.accept = ".jpg,.jpeg,.png";
         } else if (conversionType === "pdf-to-img") {
           fileInput.accept = ".pdf";
@@ -489,10 +453,10 @@
             if (conversionType === "img-to-pdf") {
               converted = await convertImageToPDF(file);
             } else if (conversionType === "pdf-to-img") {
-              converted = await convertPDFToImage(file);
+              converted = await convertPDFToJPG(file);
             }
             convertedFiles.push(converted);
-            // For demonstration, show a dummy 100% change message
+            // Display conversion completion information
             resultsElement.innerHTML = `<span class="percentage">Done</span>
               <span class="size">${formatSize(file.size)} → ${formatSize(
               converted.size
@@ -509,7 +473,7 @@
         downloadBtn.disabled = false;
       }
 
-      // Convert an image file to a single-page PDF using jsPDF
+      // Convert a JPG (or image) file to a single-page PDF using jsPDF
       async function convertImageToPDF(file) {
         return new Promise((resolve, reject) => {
           const reader = new FileReader();
@@ -518,19 +482,14 @@
             const img = new Image();
             img.src = event.target.result;
             img.onload = function () {
-              // Create a new PDF instance
               const { jsPDF } = window.jspdf;
-              // Set page size to match the image dimensions (or use a fixed size)
               const pdf = new jsPDF({
                 orientation: img.width > img.height ? "landscape" : "portrait",
                 unit: "pt",
                 format: [img.width, img.height],
               });
-              // Add the image to the PDF
               pdf.addImage(img, "JPEG", 0, 0, img.width, img.height);
-              // Output as blob
               const pdfBlob = pdf.output("blob");
-              // Rename file (replace extension)
               const newName = file.name.replace(/\.[^.]+$/, ".pdf");
               const convertedFile = new File([pdfBlob], newName, {
                 type: "application/pdf",
@@ -548,8 +507,8 @@
         });
       }
 
-      // Convert a PDF file to an image by rendering the first page using pdf.js
-      async function convertPDFToImage(file) {
+      // Convert a PDF file to a JPG by rendering the first page using pdf.js
+      async function convertPDFToJPG(file) {
         return new Promise((resolve, reject) => {
           const reader = new FileReader();
           reader.readAsArrayBuffer(file);
@@ -569,15 +528,23 @@
                 viewport: viewport,
               };
               await page.render(renderContext).promise;
-              // Convert canvas to image blob
-              canvas.toBlob((blob) => {
-                const newName = file.name.replace(/\.[^.]+$/, ".png");
-                const convertedFile = new File([blob], newName, {
-                  type: "image/png",
-                  lastModified: Date.now(),
-                });
-                resolve(convertedFile);
-              });
+              // Convert canvas to JPEG blob (quality set to 0.9)
+              canvas.toBlob(
+                (blob) => {
+                  if (!blob) {
+                    reject(new Error("Failed to convert canvas to image"));
+                    return;
+                  }
+                  const newName = file.name.replace(/\.[^.]+$/, ".jpg");
+                  const convertedFile = new File([blob], newName, {
+                    type: "image/jpeg",
+                    lastModified: Date.now(),
+                  });
+                  resolve(convertedFile);
+                },
+                "image/jpeg",
+                0.9
+              );
             } catch (err) {
               reject(err);
             }
@@ -588,7 +555,7 @@
         });
       }
 
-      // Download all converted files as a ZIP archive
+      // Download all converted files as a ZIP archive with the domain name in the file name.
       async function downloadAllFiles() {
         if (!convertedFiles.length) return;
         const zip = new JSZip();
@@ -599,26 +566,10 @@
         const content = await zip.generateAsync({ type: "blob" });
         const link = document.createElement("a");
         link.href = URL.createObjectURL(content);
-        link.download = "converted_files.zip";
+        // The downloaded file name now uses the domain name.
+        link.download = "convertpdftojpg.in_converted_files.zip";
         link.click();
       }
-
-      // Mobile menu toggle
-      document
-        .getElementById("menuToggle")
-        .addEventListener("click", function () {
-          const navMenu = document.querySelector(".nav-menu");
-          navMenu.classList.toggle("active");
-          const hamburger = this.querySelector(".hamburger");
-          const closeIcon = this.querySelector(".close-icon");
-          if (navMenu.classList.contains("active")) {
-            hamburger.style.display = "none";
-            closeIcon.style.display = "inline";
-          } else {
-            hamburger.style.display = "inline";
-            closeIcon.style.display = "none";
-          }
-        });
     </script>
   </body>
 </html>
