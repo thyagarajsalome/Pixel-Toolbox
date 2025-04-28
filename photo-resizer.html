@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PixelToolbox - Photo Re-sizer</title>
+    <!-- SEO & Social Meta Tags -->
+    <meta
+      name="description"
+      content="PixelToolbox Photo Re-sizer: Resize your photo for passport, CV, government documents, license, Aadhaar and more. Preview and download resized photos in inches."
+    />
+    <meta
+      name="keywords"
+      content="PixelToolbox, photo resizer, passport photo, CV photo, government documents, Aadhaar photo, license photo, resize photo"
+    />
+    <meta name="author" content="Your Name or Company" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://example.com/photo-resizer" />
+    <!-- Inline CSS for UI/UX -->
+    <style>
+      /* Smooth Scrolling */
+      html {
+        scroll-behavior: smooth;
+      }
+      /* Reset & Body */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f8f9fa;
+        color: #333;
+        line-height: 1.6;
+      }
+      /* Navigation Bar */
+      nav {
+        background-color: #fff;
+        border-bottom: 1px solid #e0e0e0;
+        padding: 10px 20px;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+      .navbar-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+      }
+      .nav-logo {
+        display: flex;
+        align-items: center;
+        font-size: 1.5em;
+        font-weight: bold;
+        color: #333;
+      }
+      .nav-logo svg {
+        margin-right: 8px;
+      }
+      .nav-menu {
+        list-style: none;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      .nav-item {
+        margin-left: 20px;
+      }
+      .nav-item a {
+        text-decoration: none;
+        color: #333;
+        padding: 8px 12px;
+        display: block;
+      }
+      .nav-item a:hover {
+        background-color: #e9ecef;
+        border-radius: 4px;
+      }
+      .menu-toggle {
+        display: none;
+        background: none;
+        border: none;
+        font-size: 1.5em;
+        cursor: pointer;
+      }
+      @media (max-width: 768px) {
+        .menu-toggle {
+          display: block;
+        }
+        .nav-menu {
+          display: none;
+          width: 100%;
+          flex-direction: column;
+        }
+        .nav-menu.active {
+          display: flex;
+        }
+        .nav-item {
+          margin-left: 0;
+          width: 100%;
+          text-align: center;
+        }
+      }
+      /* Hero Section */
+      .hero {
+        text-align: center;
+        padding: 40px 20px;
+        background-color: #e9ecef;
+        margin-bottom: 30px;
+      }
+      .hero h1 {
+        font-size: 2.5em;
+        margin-bottom: 10px;
+      }
+      .hero p {
+        font-size: 1.1em;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+      /* Main Container */
+      .container {
+        max-width: 1200px;
+        margin: 0 auto 40px auto;
+        padding: 20px;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      /* Controls */
+      .conversion-controls {
+        margin: 20px 0;
+        padding: 15px;
+        border: 1px solid #eee;
+        border-radius: 8px;
+        background: #fafafa;
+      }
+      .conversion-controls h3 {
+        margin-bottom: 10px;
+      }
+      select,
+      input[type="number"] {
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      /* Drag & Drop Area */
+      .drag-area {
+        border: 2px dashed #ccc;
+        padding: 20px;
+        text-align: center;
+        margin-bottom: 20px;
+        height: 150px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        border-radius: 8px;
+        background: #fdfdfd;
+      }
+      .drag-area.active {
+        border-color: #007bff;
+        background: #e7f0fd;
+      }
+      /* Preview Area */
+      .preview-container {
+        text-align: center;
+        margin-top: 20px;
+      }
+      .preview-container canvas {
+        border: 1px solid #ddd;
+        margin-bottom: 10px;
+      }
+      /* Buttons */
+      button {
+        background: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-right: 10px;
+      }
+      button:hover:not(:disabled) {
+        background: #0056b3;
+      }
+      button:disabled {
+        background: #cccccc;
+        cursor: not-allowed;
+      }
+      /* File Info List */
+      .file-list {
+        margin: 20px 0;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        max-height: 300px;
+        overflow-y: auto;
+      }
+      .file-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        border-bottom: 1px solid #eee;
+      }
+      .file-item:last-child {
+        border-bottom: none;
+      }
+      .info {
+        display: flex;
+        align-items: center;
+      }
+      .thumbnail {
+        width: 60px;
+        height: 60px;
+        object-fit: cover;
+        margin-right: 15px;
+        border-radius: 4px;
+      }
+      .file-name {
+        font-weight: bold;
+      }
+      .size {
+        color: #666;
+        font-size: 0.9em;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navigation Bar -->
+    <nav>
+      <div class="navbar-container">
+        <div class="nav-logo">
+          <!-- Custom SVG Logo -->
+          <svg
+            width="30"
+            height="30"
+            viewBox="0 0 30 30"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <rect
+              x="2"
+              y="2"
+              width="26"
+              height="26"
+              stroke="#333"
+              stroke-width="2"
+              fill="none"
+            />
+            <text x="15" y="21" font-size="12" text-anchor="middle" fill="#333">
+              PT
+            </text>
+          </svg>
+          PixelToolbox
+        </div>
+        <button class="menu-toggle" id="menuToggle">
+          <span class="hamburger">&#9776;</span>
+          <span class="close-icon" style="display: none">&times;</span>
+        </button>
+        <ul class="nav-menu">
+          <li class="nav-item"><a href="index.html">Home</a></li>
+          <li class="nav-item"><a href="about.html">About</a></li>
+          <li class="nav-item"><a href="tools.html">Tools</a></li>
+          <li class="nav-item"><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero">
+      <h1>Photo Re-sizer</h1>
+      <p>
+        Resize your photo for Passport, CV, Government IDs, License, Aadhaar and
+        more with a live preview.
+      </p>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+      <!-- Conversion Controls -->
+      <div class="conversion-controls">
+        <h3>Select Re-size Options</h3>
+        <p>Common Photo Sizes:</p>
+        <ul>
+          <li><strong>Passport:</strong> 2 x 2 inches</li>
+          <li><strong>Visa / Government:</strong> 2 x 2 inches</li>
+          <li><strong>CV / Profile:</strong> 1.5 x 1.5 inches</li>
+          <li><strong>License / Aadhaar:</strong> 2 x 2 inches</li>
+          <li><strong>Custom:</strong> Enter your dimensions in inches</li>
+        </ul>
+        <label for="presetSize">Choose Preset:</label>
+        <select id="presetSize">
+          <option value="passport">Passport (2 x 2 inches)</option>
+          <option value="visa">Visa/Government (2 x 2 inches)</option>
+          <option value="cv">CV/Profile (1.5 x 1.5 inches)</option>
+          <option value="license">License/Aadhaar (2 x 2 inches)</option>
+          <option value="custom">Custom</option>
+        </select>
+        <div id="customSizeOptions" style="display: none; margin-top: 10px">
+          <label for="customWidth">Width (in):</label>
+          <input
+            type="number"
+            id="customWidth"
+            step="0.1"
+            min="0"
+            placeholder="Width"
+          />
+          <label for="customHeight">Height (in):</label>
+          <input
+            type="number"
+            id="customHeight"
+            step="0.1"
+            min="0"
+            placeholder="Height"
+          />
+        </div>
+      </div>
+
+      <!-- Drag & Drop Area -->
+      <div class="drag-area" id="dropZone">
+        <div>Drop your photo here or click to select</div>
+        <input
+          type="file"
+          id="fileInput"
+          accept="image/*"
+          style="display: none"
+        />
+      </div>
+
+      <!-- File Info List -->
+      <div class="file-list" id="fileList"></div>
+
+      <!-- Preview and Download -->
+      <div class="preview-container">
+        <canvas id="previewCanvas"></canvas>
+        <br />
+        <button id="resizeBtn" disabled>Resize Photo</button>
+        <button id="downloadBtn" disabled>Download Resized Photo</button>
+      </div>
+    </div>
+
+    <!-- Main JavaScript -->
+    <script>
+      // Elements
+      const dropZone = document.getElementById("dropZone");
+      const fileInput = document.getElementById("fileInput");
+      const fileListContainer = document.getElementById("fileList");
+      const presetSizeSelect = document.getElementById("presetSize");
+      const customSizeOptions = document.getElementById("customSizeOptions");
+      const customWidthInput = document.getElementById("customWidth");
+      const customHeightInput = document.getElementById("customHeight");
+      const previewCanvas = document.getElementById("previewCanvas");
+      const resizeBtn = document.getElementById("resizeBtn");
+      const downloadBtn = document.getElementById("downloadBtn");
+
+      let originalImage = null;
+      let resizedBlob = null;
+
+      // Constants
+      // We assume 96 DPI (dots per inch) for conversion from inches to pixels.
+      const DPI = 96;
+
+      // Show custom size inputs if Custom is selected
+      presetSizeSelect.addEventListener("change", () => {
+        customSizeOptions.style.display =
+          presetSizeSelect.value === "custom" ? "block" : "none";
+      });
+
+      // Event Listeners for file drag and drop
+      dropZone.addEventListener("click", () => fileInput.click());
+      dropZone.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        dropZone.classList.add("active");
+      });
+      dropZone.addEventListener("dragleave", () => {
+        dropZone.classList.remove("active");
+      });
+      dropZone.addEventListener("drop", handleFiles);
+      fileInput.addEventListener("change", handleFiles);
+
+      function handleFiles(e) {
+        e.preventDefault();
+        dropZone.classList.remove("active");
+        const selectedFiles = e.target.files || e.dataTransfer.files;
+        if (selectedFiles.length > 0) {
+          // For simplicity, take the first image
+          const file = selectedFiles[0];
+          if (!file.type.startsWith("image/")) {
+            alert("Please select a valid image file.");
+            return;
+          }
+          displayFileInfo(file);
+          loadImage(file);
+        }
+      }
+
+      // Display uploaded file info
+      function displayFileInfo(file) {
+        fileListContainer.innerHTML = "";
+        const fileItem = document.createElement("div");
+        fileItem.className = "file-item";
+        const infoDiv = document.createElement("div");
+        infoDiv.className = "info";
+        const thumb = document.createElement("img");
+        thumb.className = "thumbnail";
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          thumb.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+        infoDiv.appendChild(thumb);
+        const details = document.createElement("div");
+        const fileName = document.createElement("div");
+        fileName.className = "file-name";
+        fileName.textContent = file.name;
+        details.appendChild(fileName);
+        const fileSize = document.createElement("div");
+        fileSize.className = "size";
+        fileSize.textContent = formatSize(file.size);
+        details.appendChild(fileSize);
+        infoDiv.appendChild(details);
+        fileItem.appendChild(infoDiv);
+        fileListContainer.appendChild(fileItem);
+      }
+
+      function formatSize(bytes) {
+        if (bytes < 1024) return bytes + " B";
+        else if (bytes < 1048576) return (bytes / 1024).toFixed(2) + " KB";
+        else return (bytes / 1048576).toFixed(2) + " MB";
+      }
+
+      // Load image and draw initial preview
+      function loadImage(file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          const img = new Image();
+          img.onload = function () {
+            originalImage = img;
+            drawPreview(img, img.width, img.height);
+            resizeBtn.disabled = false;
+          };
+          img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+
+      // Draw the image on the canvas
+      function drawPreview(image, width, height) {
+        previewCanvas.width = width;
+        previewCanvas.height = height;
+        const ctx = previewCanvas.getContext("2d");
+        ctx.clearRect(0, 0, previewCanvas.width, previewCanvas.height);
+        ctx.drawImage(image, 0, 0, width, height);
+      }
+
+      // Resize image based on selected preset or custom size
+      resizeBtn.addEventListener("click", () => {
+        if (!originalImage) return;
+
+        let targetWidth, targetHeight;
+        const preset = presetSizeSelect.value;
+        // Define preset sizes in inches
+        switch (preset) {
+          case "passport":
+            targetWidth = 2;
+            targetHeight = 2;
+            break;
+          case "visa":
+            targetWidth = 2;
+            targetHeight = 2;
+            break;
+          case "cv":
+            targetWidth = 1.5;
+            targetHeight = 1.5;
+            break;
+          case "license":
+            targetWidth = 2;
+            targetHeight = 2;
+            break;
+          case "custom":
+            targetWidth = parseFloat(customWidthInput.value);
+            targetHeight = parseFloat(customHeightInput.value);
+            if (
+              isNaN(targetWidth) ||
+              isNaN(targetHeight) ||
+              targetWidth <= 0 ||
+              targetHeight <= 0
+            ) {
+              alert("Please enter valid custom dimensions.");
+              return;
+            }
+            break;
+          default:
+            targetWidth = originalImage.width / DPI; // fallback to current inches
+            targetHeight = originalImage.height / DPI;
+        }
+        // Convert inches to pixels
+        const pixelWidth = targetWidth * DPI;
+        const pixelHeight = targetHeight * DPI;
+        // Draw the resized image on the canvas for preview
+        drawPreview(originalImage, pixelWidth, pixelHeight);
+        // Convert canvas to blob for download
+        previewCanvas.toBlob((blob) => {
+          resizedBlob = blob;
+          downloadBtn.disabled = false;
+        }, "image/png");
+      });
+
+      // Download the resized photo
+      downloadBtn.addEventListener("click", () => {
+        if (!resizedBlob) return;
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(resizedBlob);
+        link.download = "resized_photo.png";
+        link.click();
+      });
+
+      // Mobile Menu Toggle
+      document
+        .getElementById("menuToggle")
+        .addEventListener("click", function () {
+          const navMenu = document.querySelector(".nav-menu");
+          navMenu.classList.toggle("active");
+          const hamburger = this.querySelector(".hamburger");
+          const closeIcon = this.querySelector(".close-icon");
+          if (navMenu.classList.contains("active")) {
+            hamburger.style.display = "none";
+            closeIcon.style.display = "inline";
+          } else {
+            hamburger.style.display = "inline";
+            closeIcon.style.display = "none";
+          }
+        });
+    </script>
+  </body>
+</html>
